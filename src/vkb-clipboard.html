@@ -1,0 +1,103 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="jslibs.html">
+<link rel="import" href="shared-logic.html">
+<link rel="import" href="log-behavior.html">
+
+<dom-module id="vkb-clipboard">
+  <script>
+    "use strict";
+    
+    /**
+     * `vkb-clipboard`
+     * Copy text to clipboard
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class vkbclipboard extends Polymer.mixinBehaviors([ SharedLogicBehavior, LogBehavior ], Polymer.Element) { // eslint-disable-line no-undef
+      static get is() { 
+        return "vkb-clipboard"; 
+      }
+
+      static get properties() {
+        return {
+          /**
+           * A content to be copied to the clipboard.
+           * It must be set before calling the `copy` function.
+           */
+          "content": {
+            "type": String,
+            "notify": true,
+          },
+
+          "loglevel": {
+            "type": String,
+            "value": "warn",
+          },
+        };
+      }
+
+      /**
+       * ctor
+       */
+      connectedCallback() {
+        super.connectedCallback();
+        this.configLog(this.loglevel);
+      }
+
+      /**
+       * Execute content copy.
+       *
+       * If the content could not be copied to the clipboard the custom bubbling event
+       * "vkb-clipboard-error" is raised.
+       * On success the non-bubbling event vkb-clipboard-success is raised.
+       * 
+       * @event vkb-clipboard-error
+       * @event vkb-clipboard-success
+       */
+      copy() {
+        this.log().debug("vkb-clipboard: copy(): Trying to copy text \"" + this.content + "\" to clipbord.");
+
+        // TODO: Prüfen und ggf. fixen der Warnung wenn leerer Text ins Clipboard kopiert wird.
+        // clipboard.write() was called without a `text/plain` data type. On some platforms, this 
+        //  may result in an empty clipboard. Call clipboard.suppressWarnings() to suppress this warning.
+        let self = this;
+        let dt = new clipboard.DT(); // eslint-disable-line no-undef
+        dt.setData("text/plain", this.content);
+        clipboard.write(dt).then(() => { // eslint-disable-line no-undef
+          self.log().debug("vkb-clipboard: Successfully copied text to clipbboard using async api.");
+          self._reportSuccess(this.content);
+        }).catch((err) => {
+          self.log().debug("vkb-clipboard: Could not copy text to clipbboard using async api: ", err);
+          self._reportFailure(err);
+        });
+      }
+
+      _reportFailure(err) {
+        if (err) {
+          this.log().error(err);
+        }
+        const ev = new CustomEvent("vkb-clipboard-error", {
+          "bubbles": true,
+          "composed": true,
+        });
+        this.dispatchEvent(ev);
+      }
+
+      _reportSuccess(content) {
+        const ev = new CustomEvent("vkb-clipboard-success", {
+          "detail": {
+            "content": content,
+          },
+          "bubbles": true,
+          "composed": false,
+        });
+        this.dispatchEvent(ev);
+      }
+    }
+
+    window.customElements.define(vkbclipboard.is, vkbclipboard);
+  </script>
+</dom-module>

@@ -1,0 +1,75 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="vkb-shared-styles">
+  <template>
+    <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
+
+    <style>
+      :host {
+        display: block;
+        --paper-font-common-base: {
+          text-transform: none;
+        }
+      }
+
+      .heading {
+        font-size: 12px;
+        text-align: left;
+        display: block;
+        padding-left: 1em;
+        padding-bottom: 0.5em;
+        margin-bottom: 0;
+      }
+
+      .flex-horizontal {
+        @apply --layout-horizontal;
+      }
+
+      .flexchild {
+        @apply --layout-flex;
+      }
+
+      .sticky {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0; 
+        z-index: 5;
+        background-color: #eeeeee;
+      }
+
+      .link {
+        cursor: pointer;
+      }
+
+      .link:hover {
+        text-decoration: underline;
+      }
+
+      .hyphen {
+        -ms-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+      }
+
+      .logo {
+        margin-right: 0.5em;
+        height: 40px;
+        width: 40px;
+      }
+
+      .lhmline > .upper {
+        background-color: rgb(255, 204, 0);
+        width: 100%;
+        height: 3px;
+      }
+
+      .lhmline > .lower {
+        background-color: rgb(51, 51, 51);
+        width: 100%;
+        height: 3px;
+      }
+    </style>
+  </template>
+</dom-module>

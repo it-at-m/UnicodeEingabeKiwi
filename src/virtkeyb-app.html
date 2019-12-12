@@ -1,0 +1,570 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<link rel="import" href="jslibs.html">
+<link rel="import" href="vkb-shared-styles.html">
+<link rel="import" href="shared-logic.html">
+<link rel="import" href="log-behavior.html">
+<link rel="import" href="vkb-model.html">
+<link rel="lazy-import" href="vkb-main.html">
+<link rel="lazy-import" href="vkb-history.html">
+<link rel="lazy-import" href="vkb-notavailable.html">
+
+<dom-module id="virtkeyb-app">
+  <template>
+    <style include="vkb-shared-styles">
+      app-drawer#drawer {
+        z-index: 10;
+      }
+
+      app-drawer#drawer div#drawercontent {
+        padding: 0.5em;
+      }
+
+      app-drawer#drawer .entry {
+        display: block;
+        margin: 1.0em;
+        text-align: left;
+      }
+
+      app-drawer#drawer .entry paper-button {
+        margin-left: 0em;
+      }
+
+      app-header#header {
+        background-color: white;
+      }
+
+      app-toolbar #homelink {
+        vertical-align: middle;
+        line-height: 10px;
+      }
+
+      app-toolbar #title {
+        font-size: 30px;
+      }
+
+      #errortoast {
+        --paper-toast-background-color: red;
+      }
+    </style>
+
+    <app-location route="{{ route }}" use-hash-as-path="" url-space-regex="^[[ rootPath ]]">
+    </app-location>
+
+    <app-route route="{{ route }}" pattern="[[ rootPath ]]:page" data="{{ routeData }}" tail="{{ subroute }}">
+    </app-route>
+    
+    <app-localstorage-document id="storage" key="storage" log="true" data="{{ storage }}" storage="window.localStorage">
+    </app-localstorage-document>
+
+    <vkb-model id="model" lang="[[ language ]]" loglevel="[[ loglevel ]]" modellocation="model/stringlatin-v2.xml">
+    </vkb-model>
+
+    <app-header-layout id="app">
+      <app-header id="header" slot="header">
+        <app-toolbar id="toolbar">
+          <a href="#[[ rootPath ]]main" id="homelink">
+            <img class="logo" id="logo" src="[[ importPath ]]../images/Kiwi-Bird-Logo.svg" alt="[[ localize('home') ]]" title="[[ localize('home') ]]">
+          </a>
+          <div main-title="" id="title">
+            [[ localize('appname') ]]
+          </div>
+
+          <template is="dom-if" if="[[ storage.feature.history ]]">
+            <paper-icon-button src="[[ importPath ]]../images/history-icon.svg" on-tap="_toogleHistory" alt="[[ localize('open_history') ]]" 
+              title="[[ localize('open_history') ]]">
+            </paper-icon-button>
+          </template>
+          <paper-icon-button icon="help" id="openhelp" on-tap="_helpRequested" alt="[[ localize('open_help') ]]" 
+            title="[[ localize('open_help') ]]">
+          </paper-icon-button>
+          <paper-icon-button src="[[ importPath ]]../images/settings-icon.svg" id="opensettings" on-tap="_toggleDrawer" alt="[[ localize('toggle_options') ]]" 
+            title="[[ localize('toggle_options') ]]">
+          </paper-icon-button>
+        </app-toolbar>
+      </app-header>
+
+      <app-drawer id="drawer" align="end" slot="drawer" swipe-open="">
+        <div id="drawercontent">
+          <paper-item class="entry" id="appnameversion">
+            [[ localize('appname') ]] V[[ localize('appversion') ]] (Build [[ localize('buildno') ]])
+          </paper-item>
+          <paper-item class="entry" id="dataversion">
+            [[ localize('dataversion') ]] V[[ _data.dataVersion ]]
+          </paper-item>
+          <paper-item class="entry" id="charsetnameversion">
+            [[ localize('charset') ]] [[ _data.slVersion ]]
+          </paper-item>
+          <paper-item class="entry" id="about">
+            <a id="aboutlink" class="link">[[ localize('about') ]]</a>
+          </paper-item>
+          <paper-item class="entry" id="resetnotifications">
+              <paper-button id="resetnotificationsbutton" class="hyphen" on-tap="_resetNotifications" noink="" raised=""
+                  alt="[[ localize('reset_notifications') ]]" title="[[ localize('reset_notifications') ]]">
+                  [[ localize('reset_notifications') ]]
+              </paper-button>
+          </paper-item>
+          <paper-item class="entry" role="option" id="automaticfocusoption">
+            <paper-checkbox id="setting_focus" checked="{{ storage.automaticFocus }}" noink="">
+              [[ localize('automatic_focus') ]]
+            </paper-checkbox>
+          </paper-item>
+          <paper-item class="entry" role="option" id="compatviewoption">
+            <paper-checkbox id="setting_collapse" checked="{{ storage.compactView }}" noink="">
+              [[ localize('compact_view') ]]
+            </paper-checkbox>
+          </paper-item>
+          <template is="dom-if" if="[[ storage.feature.serif ]]">
+            <paper-item class="entry" role="option" id="serifoption">
+              <paper-checkbox id="setting_serif" checked="{{ storage.serifStyle }}" on-change="_updateFont" noink="">
+                [[ localize('serif_style') ]]
+              </paper-checkbox>
+            </paper-item>
+          </template>
+        </div>
+      </app-drawer>
+
+      <div id="contentarea">
+        <iron-pages id="viewselector" selected="[[ page ]]" attr-for-selected="name" fallback-selection="notfound" role="main">
+          <vkb-main name="main" id="mainview" loglevel="[[ loglevel ]]" model="{{ _data.model }}" storage="{{ storage }}" 
+              helpmapping="{{ _data.helpMapping }}" mode="[[ mode ]]" inputelement="{{ inputelement }}" font$="[[ _computeStyle(storage.serifStyle) ]]">
+          </vkb-main>
+          <vkb-history name="history" id="historyview" loglevel="[[ loglevel ]]" >
+          </vkb-history>
+          <vkb-notavailable name="notavailable" id="notavailableview" loglevel="[[ loglevel ]]" >
+          </vkb-notavailable>
+        </iron-pages>
+      </div>
+
+      <div id="footer">
+        <!-- Empty -->
+      </div>
+
+    </app-header-layout>
+
+    <paper-toast id="errortoast" duration="0" always-on-top="">
+      <paper-button autofocus="" on-tap="_closeError"> [[ localize('errortoast_close') ]] </paper-button>
+    </paper-toast>
+
+    <paper-dialog id="clipboardfailuredialog" modal="">
+      <p>
+        [[ localize('clipboardcopy_failed')]]
+      </p>
+      <div class="buttons">
+        <paper-button dialog-dismiss="" autofocus="" on-tap="_focusMainBuffer">[[ localize('clipboardcopy_failed_ok') ]]</paper-button>
+      </div>
+    </paper-dialog>
+
+   </template>
+
+  <script>
+    "use strict";
+
+    // 
+    // Gesture events like tap and track generated from touch will not be
+    // preventable, allowing for better scrolling performance.
+    //
+    Polymer.setPassiveTouchGestures(true);
+    
+    class virtkeybapp extends Polymer.mixinBehaviors([ SharedLogicBehavior, LogBehavior, Polymer.AppLocalizeBehavior, Polymer.IronA11yKeysBehavior ], Polymer.Element) { // eslint-disable-line no-undef
+      static get is() { 
+        return "virtkeyb-app"; 
+      }
+
+      static get properties() {
+        return {
+          "_data": {
+            "type": Object,
+            "value":
+            { 
+            },
+            "notify": true,
+          },
+
+          "storage": {
+            "type": Object,
+            "value":
+            {
+            },
+            "notify": true,
+          },
+
+          "loglevel": {
+            "type": String,
+            "value": "warn",
+          },
+
+          "language": {
+            "type": String,
+            "value": "de",
+          },
+
+          "counter": {
+            "type": String,
+            "value": "false",
+          },
+
+          "mode": {
+            "type": String,
+            "value": "standalone",
+          },
+
+          "inputelement": {
+            "type": Object,
+            "notify": true,
+            "value": null,
+          },
+
+          "page": {
+            "type": String,
+            "reflectToAttribute": true,
+            "observer": "_pageChanged",
+          },
+          "routeData": Object,
+          "subroute": Object,
+          "rootPath": String,
+        };
+      }
+
+      static get observers() {
+        return [
+          "_routePageChanged(routeData.page)",
+        ];
+      } 
+
+      // Global key bindings
+      get keyBindings() {
+        return {
+          "f1": "_helpRequested",
+          "f8": "_toogleHistory",
+        };
+      }
+
+      get keyEventTarget() {
+        return document.body;
+      }
+
+      //
+      // ctor
+      //
+      connectedCallback() {
+        super.connectedCallback();
+        this.configLog(this.loglevel);
+        this.log().debug("connectedCallback(): Running ctor");
+
+        //
+        // Load localization
+        //
+        this.loadResources(this.resolveUrl("locales.json"));
+
+        //
+        // Counter
+        //
+        let app = this;
+        if (this.counter === "true") {
+          fetch(this.resolveUrl("counter/counter.png"), {
+            "cache": "no-cache",
+            "credentials": "same-origin",
+          }).then((response) => { // eslint-disable-line no-unused-vars
+            app.log().debug("Fired request to count instances.");
+          }).catch((error) => { // eslint-disable-line no-unused-vars
+            app.log().debug("Failed to fire request to count instances.");
+          });
+        } 
+
+        this._prepareHelpMapping();
+
+        //
+        // Add event listeners
+        //
+        this.addEventListener("notify-error", (event) => { 
+          app._handleError(event); 
+        });
+        this.$.viewselector.addEventListener("iron-select", (event) => { // eslint-disable-line no-unused-vars
+          app.$.viewselector.selectedItem.focus();
+        });
+        this.$.about.addEventListener("click", (event) => { // eslint-disable-line no-unused-vars
+          app._openWindow("help/" + this.language + "/about.html", "about");
+        });
+
+        //
+        // Support binding
+        //
+        this.set("_data.model", this.$.model);
+
+        //
+        // Load model and config
+        //
+        app.$.model.getModelProperties().then((mp) => {
+          app.set("_data.dataVersion", mp.dataversion);
+          app.set("_data.slVersion", mp.name);
+        });
+        this.$.storage.getStoredValue("storageModelVersion").then(() => {
+          app._updateOrResetStorageModel();
+        });
+
+        this.log().debug("connectedCallback(): ctor completed");
+      }
+
+      //
+      // dtor
+      //
+      disconnectedCallback() {
+        super.disconnectedCallback();
+
+        this.log().debug("disconnectedCallback(): dtor completed");   
+      }
+
+      _focusMainBuffer() {
+        this.mainview.focus();
+      }
+
+      //
+      // Update or initialize model, i.e. peristent konfiguration
+      // 
+      _updateOrResetStorageModel() {
+        const currentStorageModelVersion = 1;
+
+        //
+        // Init local storage
+        //
+        let existingStorageModelVersion = this.storage.storageModelVersion;
+        this.log().debug("_updateOrInitModel(): currentStorageModelVersion=" + currentStorageModelVersion + "; existingStorageModelVersion=" + existingStorageModelVersion + ".");
+        if (existingStorageModelVersion === currentStorageModelVersion) {
+          this.log().debug("_updateOrInitModel(): detected from local storage, that browser has been here before and model version matches -- nothing to do.");
+        } else {
+          this.log().debug("_updateOrInitModel(): detected from local storage, that browsers hasn't been here befor or containts an older model version -- reseting it.");
+
+          //
+          // Default Configuration
+          //
+          this.set("storage.automaticFocus", true);
+          this.set("storage.compactView", false);
+          this.set("storage.newsSeen", "");
+          this.set("storage.filterCaseInsensitive", false);
+          this.set("storage.filterRegion", 0);
+          this.set("storage.serifStyle", false);
+
+          //
+          // Feature-toggles
+          //
+          this.set("storage.feature", { 
+            "history": false,
+            "serif": false,
+          });
+
+          //
+          // Version of the model
+          //
+          this.set("storage.storageModelVersion", currentStorageModelVersion);
+        }
+      }
+
+      //
+      // Toggle drawer
+      //
+      _toggleDrawer(event) { // eslint-disable-line no-unused-vars
+        this.$.drawer.toggle();
+      } 
+
+      //
+      // Toggle history
+      //
+      _toogleHistory(event) { // eslint-disable-line no-unused-vars
+        if (! this.storage.feature.history) {
+          return;
+        } 
+        let newPath = "#" + this.rootPath + ((window.location.href.endsWith("/history")) ? "main" : "history");
+        this.log().debug("Switch to new path \"" + newPath + "\".");
+        window.history.pushState({}, null, newPath);
+        window.dispatchEvent(new CustomEvent("location-changed"));
+      } 
+
+      _routePageChanged(page) {
+        //
+        // Default route (if page is empty is main view)
+        //
+        this.set("page", page || "main");
+        this.log().debug("Navigation: New page is \"" + this.page + "\".");
+      }
+
+      _pageChanged(page) {
+        //
+        // Load page import on demand.
+        //
+        let resolvedPageUrl = this.resolveUrl("vkb-" + page + ".html");
+        Polymer.importHref(resolvedPageUrl, null, this._showNotAvailableView.bind(this), true);
+      }
+
+      _showNotAvailableView() {
+        this.set("page", "notavailable");
+      }
+
+      _resetNotifications() {
+        this.log().debug("Reset notifications.");
+        this.set("storage.newsSeen", "");
+      }
+
+      _updateFont() {
+        console.log("Font updated.");
+        this.$.mainview.setAttribute("font",(this.storage.serifStyle === true) ? "serif": "");
+        this.updateStyles();
+      }
+
+      //
+      // Online help requested
+      //
+      _helpRequested(event) { // eslint-disable-line no-unused-vars
+        let activeElem = this._findActiveElement();
+        let helpUrl = this._mapActiveElement(activeElem);
+ 
+        this._openWindow(helpUrl, "help");
+      }
+
+      //
+      // Find element having the focus in the application
+      //
+      _findActiveElement() {
+        let activeElemId = this.$.viewselector.selectedItem.getActiveElementId();
+        if (activeElemId !== null) {
+          return [ this.$.viewselector.selectedItem.id, activeElemId ];
+        }
+
+        activeElemId = this.getActiveElementId();
+        if (activeElemId !== null) {
+          return [ "virtkeyb-app", activeElemId ];
+        }
+
+        return null;
+      }
+
+      // 
+      // Map active element to section identifier
+      //
+      _mapActiveElement(elem) {
+        let result = null;
+        if (elem === null) {
+          result = this._data.helpMapping["special/fallback"];
+
+        } else {
+          let key = elem.join("/");
+          this.log().debug("Help requested for context key=\"" + key + "\".");
+
+          let keyBoardRe = new RegExp("mainview/id[0-9a-f]+", "i");
+          if (keyBoardRe.exec(key)) {
+            // Map all buttons of the keyboard 
+            result = this._data.helpMapping["mainview/keyboard"];
+          } else {
+            // Check mapping
+            result = this._data.helpMapping[key];
+          }
+
+          if (result == null) { // Compare for null in all variants
+            // Map to root page
+            this.log().debug("No help mapping found for key \"" + key + "\" -- mapping to root page.");
+            result = this._data.helpMapping["special/fallback"];
+          }
+        }
+
+        // Add prefix to complete url
+        result = this._data.helpMapping["special/prefix"] + result;
+
+        // Add locale (ie. this.language) to URL: e.g. lang=de
+        result = result.replace(new RegExp("\\$lang\\$","g"),this.language);
+
+        this.log().debug("Mapping help from " + elem + " to \"" + result + "\".");
+        return result;
+      }
+
+      //
+      // Prepare help mapping
+      //
+      _prepareHelpMapping() {
+        //
+        // Load JSON file containing the mappings for online help
+        //
+        let self = this;
+        fetch(this.resolveUrl("help-mapping-custom.json"), {
+          "credentials": "same-origin", 
+        }).then((response) => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            self.log().debug("loading of customized help mapping failed (statusCode=" + response.status + ") -- trying default mapping.");
+            return fetch(this.resolveUrl("help-mapping.json"), {
+              "credentials": "same-origin", 
+            }).then((response) => {
+              self.log().debug("loaded mapping for help successfully: statusCode=" + response.status + ".");
+              return response.text();
+            });
+          }
+        }).then((text) => {
+          //
+          // JavaScript style comments line comments processing
+          //
+          let commentRe = new RegExp("^\\s*//");
+          let stripped = text.split("\n").filter((line) => {
+            return commentRe.exec(line) === null;
+          }).join("\n");
+          return JSON.parse(stripped);
+        }).then((json) => {
+          self.set("_data.helpMapping", json);
+        }).catch((err) => {
+          // Communication or parse errors
+          self._error(err);
+        });
+      }
+
+      _computeStyle(serifStyle) {
+        return (serifStyle === true) ? "serif" : ""; 
+      }
+
+
+      //
+      // Handle error message delivered as custom event
+      //
+      _handleError(event) {
+        this.log().debug("_handleError(): called.");
+        if (event.detail.err) {
+          this.log().error(event.detail.err);
+        }
+
+        let messageKey = (event.detail.message) ? event.detail.message : "error_unspecfic";
+        let text = this.localize(messageKey);
+        this.log().debug("_handleError(): messageKey=\"" + messageKey + "\": \"" + text + "\".");
+
+        this.$.errortoast.text = text;
+        this.$.errortoast.open();
+      }
+
+      //
+      // Close error toast
+      //
+      _closeError(event) { // eslint-disable-line no-unused-vars
+        this.$.errortoast.close();
+      }
+    }
+
+    window.customElements.define(virtkeybapp.is, virtkeybapp);
+  </script>
+</dom-module>

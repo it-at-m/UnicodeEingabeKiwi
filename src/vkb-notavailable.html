@@ -1,0 +1,62 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="jslibs.html">
+<link rel="import" href="vkb-shared-styles.html">
+<link rel="import" href="shared-logic.html">
+<link rel="import" href="log-behavior.html">
+
+<dom-module id="vkb-notavailable">
+  <template>
+    <style include="vkb-shared-styles">
+    </style>
+    
+    <div>
+        <h1>[[ localize('notavailable_heading') ]]</h1>
+        <p>
+          [[ localize('notavailable_text') ]]<br>
+          <a href="[[rootPath]]">[[ localize('notavailable_start') ]]</a>
+        </p>
+    </div>
+  </template>
+
+  <script>
+    class vkbnotavailable extends Polymer.mixinBehaviors([ SharedLogicBehavior, LogBehavior, Polymer.AppLocalizeBehavior ], Polymer.Element) { // eslint-disable-line no-undef
+      static get is() {
+        return "vkb-notavailable";
+      }
+
+      static get properties() {
+        return {
+          "rootPath": String,
+
+          "loglevel": {
+            "type": String,
+            "value": "warn",
+          },
+
+          "language": {
+            "type": String,
+            "value": "de",
+          },
+        };
+      }
+    
+      //
+      // ctor
+      //
+      connectedCallback() {
+        super.connectedCallback();
+        this.configLog(this.loglevel);
+        this.log().debug("connectedCallback(): Running ctor");
+
+        //
+        // Load localization
+        //
+        this.loadResources(this.resolveUrl("locales.json"));
+      }
+    }
+
+    window.customElements.define(vkbnotavailable.is, vkbnotavailable);
+  </script>
+</dom-module>

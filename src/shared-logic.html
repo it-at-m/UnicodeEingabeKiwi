@@ -1,0 +1,55 @@
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<script>
+    (function() {
+      SharedLogicBehavior = { // eslint-disable-line no-undef
+        //
+        // Display error message
+        //
+        _error(err, messageKey = "") {
+          const event = new CustomEvent("notify-error", {
+            "detail": {
+              "message": messageKey,
+              "err": err,
+            },
+            "bubbles": true,
+            "composed": true,
+          });
+          this.dispatchEvent(event);
+        },
+
+        //
+        // Open help in separate browser window
+        //
+        _openWindow(url, target = "") {
+          let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+          let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+          this.log().debug("_openWindow: \"" + url + "\".");
+          let finalUrl = this.resolveUrl(url);
+          let newWindow = window.open(finalUrl, target, "menubar=no, toolbar=no, location=no, directories=no, status=no, scrollbars=yes, resizable=yes, dependent, innerWidth=" + w + ", innerHeight=" + h);
+          newWindow.focus();
+        },
+
+        //
+        // Get id of element having the focus 
+        //
+        getActiveElementId() {
+          let elem = Polymer.dom(this.root).activeElement;
+          if ((elem !== null) && (elem.id !== null) && (elem.id.trim() !== "")) {
+            //
+            // Some paper-input-elements contain a closing quotation a part of the id 
+            // => Workaround 
+            //
+            let id = elem.id.trim().replace("\"", "");
+
+            this.log().debug("activeElementId(): detected active element has id \"" + id + "\".");
+            return id;
+          }
+
+          return null;
+        },
+      };
+    })();
+</script>

@@ -1,0 +1,24 @@
+{
+  "scripts": {
+    "test": "mocha './test/businesslogic/*.spec.js'"
+  },
+  "dependencies": {
+    "clipboard-polyfill": "^2.8.6",
+    "grapheme-splitter": "^1.0.4",
+    "loglevel": "^1.6.4",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.0.1",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "lighthouse": "^5.2.0",
+    "mocha": "^6.1.4",
+    "sw-precache": "^5.2.1"
+  }
+}

@@ -1,0 +1,363 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="jslibs.html">
+<link rel="import" href="shared-logic.html">
+<link rel="import" href="log-behavior.html">
+
+<dom-module id="vkb-model">
+  <script>
+    "use strict";
+
+    /**
+     * `vkb-model`
+     * Logic for handling business logic
+     *
+     * @customElement
+     * @polymer
+     */
+    class vkbmodel extends Polymer.mixinBehaviors([ SharedLogicBehavior, LogBehavior ], Polymer.Element) { // eslint-disable-line no-undef
+      static get is() { 
+        return "vkb-model"; 
+      }
+
+      static get properties() {
+        return {
+          /**
+            * Locale for sorting
+            */
+          "lang": {
+            "type": String,
+            "value": "de",
+          },
+
+          /**
+           * URL to access model (XML file)
+           */
+          "modellocation": {
+            "type": String,
+          },
+
+          /**
+           * loglevel
+           */
+          "loglevel": {
+            "type": String,
+            "value": "warn",
+          },
+
+          /**
+           * Private properties
+           */
+          "_data": {
+            "type": Object,
+            "value": {
+
+            },
+            "readonly": true,
+          },
+        };
+      }
+
+      /**
+       * ctor
+       */
+      connectedCallback() {
+        super.connectedCallback();
+        this.configLog(this.loglevel);
+        this.log().debug("connectedCallback(): Running ctor");
+
+        //
+        // XML-NS resolver
+        //
+        this.set("_data.xmlnsRes", (prefix) => {
+          const xmlns = {
+            "sl": "http://muenchen.de/stringlatin/",
+          };
+          return xmlns[prefix] || "";
+        });
+
+        //
+        // Support Unicode-aware sorting
+        //
+        this.set("_data.collator", new Intl.Collator(this.lang, {sensitivty: "letiant"}));
+        this.set("_data.strComparator", (a, b) => this._data.collator.compare(a, b));
+
+        this.log().debug("connectedCallback(): ctor completed");
+      }
+
+      /**
+       * Return properties of model
+       * 
+       * @return {Promise} JSON with properties 
+       * - name: E.g. "String.Latin V1.2"
+       * - dataversion: "2018-09-25"
+       */
+      getModelProperties() {
+        let self = this;
+        return this._ensureData(() => {
+          let name = self._getStringByXPath("/sl:stringlatin/@name", this._data.xmlDom);
+          let dataversion = self._getStringByXPath("/sl:stringlatin/@dataversion", this._data.xmlDom);
+          return {
+            "name": name,
+            "dataversion": dataversion,
+          };
+        }, "getModelProperties()");
+      }
+
+      /**
+       * Return list of profiles in order inside the XML model
+       * 
+       * @return {Promise} Array of elements containing id, and name of profiles
+       */
+      getAllProfiles() {
+        let self = this;
+        return this._ensureData(() => {
+          let profileIds = self._getStringsByXPath("/sl:stringlatin/sl:profile/@id", this._data.xmlDom);
+          let profiles = [];
+          let seq = 1; // 0 is reserved for "all"
+          for (let i = 0; i < profileIds.length; i++) {
+            let xpath = "/sl:stringlatin/sl:profile[@id=" + self._getStringLiteralForXPath(profileIds[i]) + "]/sl:name[@lang=\"" + self.lang + "\"]/text()";
+            let profileName = self._getStringByXPath(xpath, this._data.xmlDom);
+            profiles.push({
+              "seq": seq,
+              "id": profileIds[i],
+              "name": profileName,
+            });
+            seq++;
+          }
+          return profiles;
+        }, "getAllProfiles()");
+      }
+
+      /**
+       * Get chars filtered according to certain criteria
+       * 
+       * @param {string} profileid The profile or ""
+       * @param {string} basechar The basechar 
+       * @param {string} type The type of basechar: real, pseudo or ""
+       * @param {boolean} caseInsensitive Flag if basechar is case-insensitive
+       * @param {boolean} onlyNormative Flag only normative chars are selected
+       * @return {Promise} Array of all chars
+       */
+      getFilteredChars(profileid, basechar, type, caseInsensitive = false, onlyNormative = true) {
+        let self = this;
+        
+        return this._ensureData(() => {
+          let expr = [];
+          if (profileid) {
+            expr.push("sl:profile/@ref=" + self._getStringLiteralForXPath(profileid));
+          }
+
+          if (onlyNormative) {
+            expr.push("@normative=\"true\"");
+          }
+
+          if (basechar) {
+            if (caseInsensitive === true) {
+              expr.push("sl:basechar/@name-ci=" + self._getStringLiteralForXPath(basechar.toLowerCase()));
+            } else {
+              expr.push("sl:basechar/@name=" + self._getStringLiteralForXPath(basechar));
+            }
+            if ((type === "real") || (type === "pseudo")) {
+              expr.push("sl:basechar/@type=\"" + type + "\"");
+            }
+          }
+
+          let xpath = "";
+          if (expr.length === 0) {
+            xpath = "/sl:stringlatin/sl:char";
+          } else {
+            xpath = "/sl:stringlatin/sl:char[" + expr.join(" and ") + "]";
+          }
+
+          let charNodes = self._getNodesByXPath(xpath, this._data.xmlDom);
+          let chars = charNodes.map((n) => {
+            let name = self._getStringByXPath("@name", self._data.xmlDom, n);
+            return {
+              "id": self._getId(name),
+              "name": name,
+              "info": self._getStringByXPath("sl:info[@lang=\"" + self.lang + "\"]/text()", self._data.xmlDom, n),
+            };
+          });
+
+          // 
+          // Sort according to unicode except for basechar, which has to be the first in any case.
+          // We assume here, that the a basechar has itsself always as basechar...
+          //
+          chars.sort((a, b) => {
+            if (a.name === basechar) {
+              return -1;
+            } else if (b.name === basechar) {
+              return 1;
+            } else {
+              return this._data.collator.compare(a.name, b.name);
+            }
+          });
+
+          return chars;
+        }, "getFilteredChars()");
+      }
+
+      /**
+       * Find basechars by char (example char "a")
+       * /sl:stringlatin/sl:char/sl:basechar[ ../@normative="true" and @type="real" and ../@name="a" ]/@name
+       *
+       * @param {string} char The char
+       * @param {String} type The type (real || pseudo)
+       * @param {boolean} onlyNormative Flag only normative chars are selected
+       * @return {Promise} Array of strings (basechars) sort according to unicode
+       */
+      getBasecharByChar(char, type = "real", onlyNormative = true) {
+        let self = this;
+        
+        return this._ensureData(() => {
+          let expr = [];
+
+          if (type === "real" || type === "pseudo") {
+            expr.push("@type=" + self._getStringLiteralForXPath(type));
+          }
+
+          if (onlyNormative) {
+            expr.push("../@normative=\"true\"");
+          }
+
+          expr.push("../@name=" + self._getStringLiteralForXPath(char));
+          let xpath = "/sl:stringlatin/sl:char/sl:basechar[" + expr.join(" and ") + "]/@name";
+
+          let basechar = null;
+          let basechars = self._getStringsByXPath(xpath, this._data.xmlDom);
+          if (basechars.length === 1) {
+            basechar = basechars[0];
+          } else {
+            if (basechars.length === 0) {
+              // Fallback: Take first char, convert it to NFD and take this as basechar.
+              self.log().warn("No basechar by reverse mapping found -- fallback to NFD coversion.");
+              basechar = char.charAt(0).normalize("NFD").charAt(0);
+            } else {
+              basechars.sort(self._data.strComparator);
+              basechar = basechars[0];
+              self.log().warn("Basechar of char is not unique ([" + basechars.join(", ") + "]) -- choosing first in alphabetical order: \"" + basechar + "\".");
+            }
+          }
+
+          return basechar;
+        }, "getBasecharByChar()");
+      }
+
+      /**
+       * Helper for running xpath queries, that result in a string list
+       * 
+       * @param {String} xpath XPath expression
+       * @param {Object} xmldom XML DOM
+       * @return {Array} Array of strings ordered as in XML document
+       */
+      _getStringsByXPath(xpath, xmldom) {
+        this.log().debug("Running xpath query \"" + xpath + "\".");
+        let results = [];
+        if (xmldom) {
+          let query = xmldom.evaluate(xpath, xmldom, this._data.xmlnsRes, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+          for (let i = 0; i < query.snapshotLength; i++) {
+            results.push(query.snapshotItem(i).nodeValue);
+          }
+        }
+        return results;
+      }
+
+      /**
+       * Helper for running xpath queries, that result in a single string value
+       * 
+       * @param {string} xpath XPath expression
+       * @param {Object} xmldom XML DOM
+       * @param {Object} context context node
+       * @return {string} The string value
+       */
+      _getStringByXPath(xpath, xmldom, context = null) {
+        this.log().debug("Running xpath query \"" + xpath + " \".");
+        let result = "";
+        if (xmldom) {
+          result = xmldom.evaluate(xpath, (context === null) ? xmldom : context, this._data.xmlnsRes, XPathResult.STRING_TYPE, null).stringValue;
+        }
+        return result;
+      }
+
+      /**
+       * Helper for running xpath queries, that result in a list of nodes
+       * 
+       * @param {String} xpath XPath expression
+       * @param {Object} xmldom XML DOM
+       * @return {Array} Array of nodes ordered as in XML document
+       */
+      _getNodesByXPath(xpath, xmldom) {
+        this.log().debug("Running xpath query \"" + xpath + "\".");
+        let results = [];
+        if (xmldom) {
+          let query = xmldom.evaluate(xpath, xmldom, this._data.xmlnsRes, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+          for (let i = 0; i < query.snapshotLength; i++) {
+            results.push(query.snapshotItem(i));
+          }
+        }
+        return results;
+      }
+
+      /**
+       * Get XPAth string literal for given string.
+       * 
+       * See https://stackoverflow.com/questions/3425637/xpath-attribute-quoting-in-javascript
+       * 
+       * @param {string} s String to create xpath expression for
+       * @return {string} XPath encodeded literal
+       */
+      _getStringLiteralForXPath(s) {
+        if (s.indexOf("\"") === -1) {
+          return "\"" + s + "\"";
+        }
+        if (s.indexOf("'") === -1) {
+          return "'" + s + "'";
+        }
+        return 'concat("' + s.replace(/("+)/g, '",\'$1\',"') + '")'; // eslint-disable-line quotes
+      }
+
+      _ensureData(logic, tag) {
+        if (this._data.xmlDom) {
+          this.log().debug("_ensureData(): " + tag + ": Using cached model.");
+          return Promise.resolve(logic());
+        } else {
+          this.log().debug("_ensureData(): " + tag + ": Fetching model.");
+          return this._loadModel().then(logic);
+        }
+      }
+
+      _loadModel() {
+        let self = this;
+
+        return fetch(this.resolveUrl(this.modellocation), { 
+          "credentials": "same-origin",
+        }).then((response) => {
+          if (! response.ok) {
+            throw Error(response.statusText);
+          }
+          self.log().debug("_loadModel(): loaded model successfully: statusCode=" + response.status + ".");
+          return response.text();
+        }).then((text) => {
+          let xmlDom = (new window.DOMParser()).parseFromString(text, "text/xml");
+          self.log().debug("_loadModel(): parsed model successfully.");
+          self.set("_data.xmlDom", xmlDom);
+        }).catch((err) => {
+          // Communication or parse errors
+          self._error(err);
+        });
+      }
+
+      _getId(str) {
+        let result = "id";
+        for (let i = 0; i < str.length; i++) {
+          result += str.codePointAt(i).toString(16);
+        }
+        return result;
+      }
+    }
+
+    window.customElements.define(vkbmodel.is, vkbmodel);
+  </script>
+</dom-module>

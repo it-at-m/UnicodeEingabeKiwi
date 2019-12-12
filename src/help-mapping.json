@@ -1,0 +1,31 @@
+{
+    "special/prefix": "help/$lang$/index.html",
+    "special/fallback": "",
+
+//   "virtkeyb-app/opensettings": "#drawer",
+//    "virtkeyb-app/appnameversion": "#drawer",
+//    "virtkeyb-app/dataversion": "#drawer",
+//    "virtkeyb-app/charsetnameversion": "#drawer",
+//    "virtkeyb-app/licenses": "#drawer",
+//    "virtkeyb-app/resetnotifications": "#drawer",
+//    "virtkeyb-app/resetnotificationsbutton": "#drawer",
+//    "virtkeyb-app/automaticfocusoption": "#drawer",
+//    "virtkeyb-app/setting_focus": "#drawer",
+//    "virtkeyb-app/compatviewoption": "#drawer",
+//    "virtkeyb-app/setting_collapse": "#drawer",
+
+//    "mainview/mainbuffer": "#mainview",
+//    "mainview/clearbufferbutton": "#mainview",
+//    "mainview/searchcharbutton": "#mainview",
+//    "mainview/copytobutton": "#mainview",
+//    "mainview/keyboard": "#mainview",
+
+//    "mainview/filterCaseInsensitive": "#mainview",
+//    "mainview/filterregion": "#mainview",
+//    "mainview/resetAllFilters": "#mainview",
+
+    "mainview/news": "#Nachrichten",
+    "mainview/news_showyes": "#Nachrichten",
+    "mainview/news_showno": "#Nachrichten",
+    "mainview/news_dontaskagain": "#Nachrichten"
+}

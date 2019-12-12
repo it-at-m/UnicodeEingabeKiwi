@@ -1,0 +1,801 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/render-status.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+
+<link rel="import" href="jslibs.html">
+<link rel="import" href="vkb-shared-styles.html">
+<link rel="import" href="shared-logic.html">
+<link rel="import" href="log-behavior.html">
+<link rel="import" href="vkb-clipboard.html">
+
+<dom-module id="vkb-main">
+  <template>
+    <style include="vkb-shared-styles">
+      #bufferpanel {
+        border-bottom: thin solid black;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        justify-content: left;
+      }
+
+      #bufferpanel #mainbuffer {
+        margin-left: 1em;
+        padding-left: 1em;
+        padding-right: 1em;
+        background-color: white;
+        --secondary-text-color: black;
+        --paper-input-container-input: {
+          font-size: 20px;
+          line-height: 1.5em;
+        };
+      }
+
+      #bufferpanel #mainbuffer.serif {
+        --paper-input-container-input: {
+          font-family: serif !important;
+          font-size: 20px;
+          line-height: 1.5em;
+        };
+      }
+
+      #bufferpanel .bufferbutton {
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      #filterpanel {
+        justify-content: left;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        border-bottom: thin solid black;
+      }
+
+      #filterpanel #filter {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+
+      #filterpanel .filterelem {
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+      }
+
+      #filterpanel .filterelem#case {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #filterpanel .filterelem label {
+        font-size: 12px;
+        color: black;
+        display: block;
+      }
+
+      #filterpanel paper-dropdown-menu {
+        margin: auto;
+        display: block;
+        width: 9em;
+        --paper-input-container-label: {
+          color: black; 
+        };
+      }
+
+      #keyboardpanel {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+      }
+
+      #keyboardpanel #keyboard {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+
+      #keyboardpanel #charlist {
+        flex: 1 1 auto;
+        overflow: visible !important;
+      }
+
+      #keyboardpanel #charlist.serif {
+        font-family: serif !important;
+      }
+
+      #keyboardpanel paper-button.charentry {
+        min-width: 2em;
+        padding: 0.25em;
+        font-size: 20px;
+        font-family: inherit !important;
+      }
+
+      #keyboardpanel #emptycharlist {
+        padding: 0.25em;
+        text-align: center;
+      }
+
+      #keyboardpanel paper-tooltip.noanim {
+        transition: none;
+      }
+
+      #newsdialog ul {
+        margin-left: 2em;
+        margin-right: 2em;
+      }
+    </style>
+    
+    <vkb-clipboard id="clipboardcopy" loglevel="[[ loglevel ]]" content="[[ _data.uctext ]]">
+    </vkb-clipboard>
+    
+    <div>
+      <div class="sticky">
+        <div class="lhmline">
+          <div class="upper"></div>
+          <div class="lower"></div>
+        </div>
+        <div id="bufferpanel">
+          <iron-collapse id="collapsebuffer" opened="{ ! storage.compactView }">
+            <h1 id="bufferheading" class="heading"> [[ localize('heading_buffer') ]] </h1>
+          </iron-collapse>
+
+          <div class="container flex-horizontal">
+            <paper-input
+              id="mainbuffer"
+              class$="flexchild [[ font ]]"
+              type="text"
+              name="text"
+              no-label-float=""
+              label="[[ localize('text') ]]"
+              value="{{ _data.uctext }}"
+              minlength="1" maxlength="200"
+              autocomplete="off"
+              on-value-changed="_uctextChanged">
+
+              <iron-a11y-keys id="mainbuffer-search" target="[[mainbuffer]]" keys="enter" on-keys-pressed="_searchChar">
+                <!-- Only when main-buffer has focus -->
+              </iron-a11y-keys>
+            </paper-input>
+      
+            <div class="bufferbutton">
+              <paper-icon-button slot="suffix" icon="clear" on-tap="_clearBuffer" id="clearbufferbutton"
+                alt="[[ localize('clear_buffer') ]]" title="[[ localize('clear_buffer') ]]">
+              </paper-icon-button>
+
+              <paper-icon-button icon="search" on-tap="_searchChar" id=searchcharbutton"
+                alt="[[ localize('search_char') ]]" title="[[ localize('search_char') ]]">
+              </paper-icon-button>
+              <paper-icon-button id="copytobutton"
+                icon="content-copy" on-tap="_copyToDestination"
+                alt="" title="">
+              </paper-icon-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="filterpanel">
+        <iron-collapse id="collapsefilter" opened="{ ! storage.compactView }">
+          <h1 id="filterheading" class="heading"> [[ localize('heading_filter') ]] </h1>
+        </iron-collapse>
+        <div id="filter" class="container flex-horizontal">
+          <div class="filterelem" id="case">
+            <div id=checkboxcontainer>
+              <label class="label" for="filterCaseInsensitive"> [[ localize('case_sensitive_label') ]] </label>
+              <paper-checkbox slot="prefix" id="filterCaseInsensitive" checked="{{ storage.filterCaseInsensitive }}" on-change="_runSearch" noink=""
+                  title="[[ localize('case_sensitive_hint') ]]">
+                <span class="title"> [[ localize('case_sensitive') ]] </span>
+              </paper-checkbox>
+            </div>
+          </div>
+          <div class="filterelem">
+            <paper-dropdown-menu class="filterelem" always-float-label="" no-animations="" noink=""
+                label="[[ localize('filter_regions') ]]" title="[[ localize('filter_regions') ]]" id="filterregion">
+              <paper-listbox id="filterregion_listbox" slot="dropdown-content" selected="[[ storage.filterRegion ]]"
+                  on-selected-changed="_filterRegionChanged">
+                <template is="dom-repeat" items="[[ _data.profiles ]]" as="region">
+                  <paper-item title="[[ region.name ]]">[[ region.name ]]</paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
+          <div class="filterelem">
+            <paper-button id="resetAllFilters" class="hyphen" on-tap="_resetAllFilters" noink="" raised=""
+                alt="[[ localize('reset_all_filters') ]]" title="[[ localize('reset_all_filters') ]]">
+              [[ localize('reset_all_filters') ]]
+            </paper-button>
+          </div>
+        </div>
+      </div>
+
+      <div id="keyboardpanel">
+        <iron-collapse id="collapsekeyboard" opened="{ ! storage.compactView }">
+          <h1 id="keyboardheading" class="heading"> [[ localize('heading_keyboard') ]] </h1>
+        </iron-collapse>
+        <div id="keyboard">
+          <iron-list id="charlist" items="[[ _data.chars ]]" as="char" grid="" class$="[[ font ]]">
+            <template>
+              <paper-button id="[[ char.id ]]" class="charentry" on-tap="_charTapped" tabindex$="[[ tabIndex ]]" noink="" raised=""> [[ char.name ]] </paper-button>
+              <template is="dom-if" if="[[ char.info ]]">
+                <paper-tooltip id="[[ char.id ]]]-info" for="[[ char.id ]]" class="noanim" offset="0" fitToVisibleBounds="true" animation-entry="noanim" animation-exit="noanim">
+                  [[ char.info ]]
+                </paper-tooltip>
+              </template>
+            </template>
+          </iron-list>
+          <template is="dom-if" if="[[ !_data.chars.length ]]">
+            <div id="emptycharlist"> [[ localize('no_charlist') ]] </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <paper-toast id="msgtoast">
+    </paper-toast>
+
+    <paper-dialog id="newsdialog" modal="">
+      <p>
+        [[ localize('news_question') ]]
+      </p>
+      <p><ul>
+        <li> [[ localize('news_item1') ]] </li>
+        <li> [[ localize('news_item2') ]] </li>
+        <li> [[ localize('news_item3') ]] </li>
+      </ul></p>
+      <p>
+        <paper-checkbox id="news_dontaskagain" checked="{{ _data.newsDontAskAgain }}" noink=""
+            title="[[ localize('news_dont_ask_again') ]]">
+          [[ localize('news_dont_ask_again') ]]
+        </paper-checkbox>
+      </p>
+      <div class="buttons">
+        <paper-button dialog-dismiss="" id="news_showno" on-tap="_newsDismiss">[[ localize('news_noshow') ]]</paper-button>
+        <paper-button dialog-confirm="" id="news_showyes" autofocus="" on-tap="_newsRequested">[[ localize('news_show') ]]</paper-button>
+      </div>
+    </paper-dialog>
+
+    <paper-dialog id="clipboardfailuredialog" modal="">
+      <p>
+        [[ localize('clipboardcopy_failed')]]
+      </p>
+      <div class="buttons">
+        <paper-button dialog-dismiss="" autofocus="" on-tap="_selectBuffer">[[ localize('clipboardcopy_failed_ok') ]]</paper-button>
+      </div>
+    </paper-dialog>
+
+   </template>
+
+  <script>
+    "use strict";
+    
+    class vkbmain extends Polymer.mixinBehaviors([ SharedLogicBehavior, LogBehavior, Polymer.AppLocalizeBehavior, Polymer.IronA11yKeysBehavior ], Polymer.Element) { // eslint-disable-line no-undef
+      static get is() { 
+        return "vkb-main"; 
+      }
+
+      static get observers() {
+        return [
+          "_storageChanged(storage.*)",
+        ];
+      }
+
+      static get properties() {
+        return {
+          "_data": {
+            "type": Object,
+            "value":
+            { 
+            },
+            "notify": true,
+          },
+
+          "model": {
+            "type": Object,
+            "notify": true,
+          },
+
+          "storage": {
+            "type": Object,
+            "value":
+            {
+            },
+            "notify": true,
+          },
+
+          "font": {
+            "type": String,
+            "value": "",
+            "notify": true,
+          },
+
+          "helpmapping": {
+            "type": Object,
+            "value":
+            {
+            },
+            "notify": true,
+          },
+
+          "loglevel": {
+            "type": String,
+            "value": "warn",
+          },
+
+          "language": {
+            "type": String,
+            "value": "de",
+          },
+
+          "inputelement": {
+            "type": Object,
+            "notify": true,
+            "value": null,
+          },
+
+          "mode": {
+            "type": String,
+          },
+        };
+      }
+
+      // Global key bindings
+      get keyBindings() {
+        return {
+          "ctrl+c": "_copyToDestination",
+          "meta+c": "_copyToDestination", // MacOS
+          "ctrl+space": "_searchChar",
+        };
+      }
+
+      //
+      // ctor
+      //
+      connectedCallback() {
+        super.connectedCallback();
+        this.configLog(this.loglevel);
+        this.log().debug("connectedCallback(): Running ctor");
+
+        //
+        // Load localization
+        //
+        this.loadResources(this.resolveUrl("locales.json"));
+
+        //
+        // Plain JS libs
+        //
+        let splitter = new GraphemeSplitter(); // eslint-disable-line no-undef
+        this.set("_data.splitter", splitter);
+
+        //
+        // Add event listeners
+        //
+        let self = this;
+        this.addEventListener("vkb-clipboard-error", (event) => { // eslint-disable-line no-unused-vars
+          self._showClipboardProblem(); 
+        });
+        this.$.clipboardcopy.addEventListener("vkb-clipboard-success", (event) => { // eslint-disable-line no-unused-vars
+          self._displayMessage("clipboard_copied"); 
+        });
+
+        //
+        // Init 
+        //
+        this.set("_data.uctext", "");
+        this.set("_data.filterBasechar", "");
+        this.set("_data.replaceMode", "std");
+
+        //
+        // Let the first frames (text buffer and filter) render frist
+        // in order to make fast the first meaningful paints on screen
+        // and then display the rather expensive keyboard.
+        // 
+        Polymer.RenderStatus.afterNextRender(this, () => {
+          if (self.mode === "standalone") {
+            //
+            // We are standalone
+            //
+            let text = self.localize("clipboard_copy");
+            self.$.copytobutton.alt = text;
+            self.$.copytobutton.title = text;
+          } else {
+            //
+            // We are embedded
+            //
+            self.set("storage.compactView", true);
+
+            let text = self.localize("field_copy");
+            self.$.copytobutton.alt = text;
+            self.$.copytobutton.title = text;
+
+            //
+            // Check if we have an initial value and get it in fill in nfc version of it.
+            // 
+            if (self.inputelement !== null) {
+              let value = self.inputelement.value;
+              self.set("_data.uctext", value.normalize("NFC"));
+            }
+          }
+
+          self.model.getAllProfiles().then((profiles) => {
+            profiles.unshift({
+              "seq": 0,
+              "id": "",
+              "name": self.localize("filter_region_all"),
+            });
+            self.set("_data.profiles", profiles);
+
+            self._promptForNews();
+
+            self._runSearch();
+
+            self.log().debug("connectedCallback(): ctor completed");
+          });
+        });
+      }
+      
+      _promptForNews() {
+        let self = this;
+        
+        this.model.getModelProperties().then((props) => {
+          let currentVersion = {
+            "appversion": self.localize("appversion"),
+            "dataversion": props.dataversion,
+          };
+          self.log().debug("_promptForNews(): Current version is \"" + JSON.stringify(currentVersion) + "\".");
+          self.set("_data.currentVersion", currentVersion);
+
+          if ((JSON.stringify(this.storage.newsSeen) !== JSON.stringify(currentVersion)) && (this.mode === "standalone")) {
+            this.$.newsdialog.open();
+          } else {
+            this.focus();
+          }
+        });
+      }
+
+      //
+      // Copy buffer to destination
+      //
+      _copyToDestination(event) { // eslint-disable-line no-unused-vars
+        if (this.inputelement === null) {
+          this.log().debug("_copyToDestination(): Copying content \"" + this._data.uctext + "\" to clipboard.");
+          let inputElem = this._getInputElem(this.$.mainbuffer);
+          inputElem.select();
+          this.$.clipboardcopy.copy();
+          inputElem.blur();
+        } else {
+          this.log().debug("_copyToDestination(): Copying content \"" + this._data.uctext + "\" to element with id \"" + this.inputid + "\".");
+          this.inputelement.value = this._data.uctext;
+        }
+      }
+
+      //
+      // Show clipboard error 
+      //
+      _showClipboardProblem(event) { // eslint-disable-line no-unused-vars
+        this.$.clipboardfailuredialog.open();
+      }
+
+      //
+      // Select main Buffer
+      //
+      _selectBuffer(event) { // eslint-disable-line no-unused-vars
+        let inputElem = this._getInputElem(this.$.mainbuffer);
+        inputElem.select();
+      }
+
+      //
+      // Clear buffer
+      //
+      _clearBuffer(event) { // eslint-disable-line no-unused-vars
+        this.log().debug("_clearBuffer(): Clearing buffer.");
+        this.set("_data.uctext", "");
+      }
+
+      //
+      // Reset all filters
+      //
+      _resetAllFilters(event) { // eslint-disable-line no-unused-vars
+        this.set("_data.filterBasechar", "");
+        this.set("storage.filterCaseInsensitive", false);
+        this.set("storage.filterRegion", 0);
+        this._runSearch();
+      }
+
+      //
+      // Region filter changed
+      //
+      _filterRegionChanged(event) {
+        let seq = event.detail.value;
+        this.log().debug("_filterRegionChanged(): selected=" + seq);
+        this.set("storage.filterRegion", seq);
+        this._runSearch();
+      }
+
+      //
+      // Search using a hotkey
+      //
+      _searchChar(event) { // eslint-disable-line no-unused-vars
+        this.log().debug("_searchChar(): Triggered.");
+
+        if (this._data.uctext === "") {
+          this.log().debug("_searchChar(): uctext empty -- skipping search.");
+          return;
+        }
+
+        let grapheme = undefined;
+        let selection = this._getBufferSelection();
+        if (selection.start === selection.end) {
+          this.log().debug("_searchChar(): no selection -- using last grapheme of whole text removing it.");
+
+          let graphemes = this._data.splitter.splitGraphemes(this._data.uctext);
+          grapheme = graphemes.slice(-1)[0];
+          this.log().debug("_searchChar(): length of last grapheme " + grapheme.length + ".");
+          this.set("_data.replaceMode", "end");
+        } else {
+          this.log().debug("_searchChar(): detected selection replacing first grapheme of selection.");
+
+          let selectionText = this._data.uctext.slice(selection.start, selection.end);
+          this.log().debug("_searchChar(): selected text: \"" + selectionText + "\".");
+
+          let graphemes = this._data.splitter.splitGraphemes(selectionText);
+          this.log().debug("_searchChar(): length of last grapheme " + selectionText.length + ".");
+          grapheme = graphemes[0];
+          this.set("_data.replaceMode", "std");
+        }
+        let self = this;
+        this.model.getBasecharByChar(grapheme).then((selectedChar) => {
+          self.log().debug("_searchChar(): selectedChar = \"" + selectedChar + "\".");
+          if (selectedChar === "") {
+            self.log().debug("_searchChar(): No selection -- ignoring request.");
+          } else {
+            self.log().debug("_searchChar(): last char is filled searching for it");
+            self.set("_data.filterBasechar", selectedChar);
+            self._runSearch();
+            self.log().debug("_searchChar(): search completed.");
+
+            if (this.storage.automaticFocus === true) {
+              let firstbutton = Polymer.dom(self.root).querySelector("#charlist paper-button");
+              if (firstbutton) {
+                self.log().debug("_searchChar(): Setting focus to first char.");
+                firstbutton.focus();
+              }
+            }
+          }
+        });
+      }
+
+      //
+      // Run action search action
+      // 
+      _runSearch(event) { // eslint-disable-line no-unused-vars
+        let seq = this.storage.filterRegion;
+        let profile = this._data.profiles.find((e) => { 
+          return e.seq === seq; 
+        });
+
+        let self = this;
+        this.model.getFilteredChars((profile) ? profile.id : "", this._data.filterBasechar, "", this.storage.filterCaseInsensitive).then((chars) => {
+          self.set("_data.chars", chars);
+          self.set("_data.lastAction", "search");
+        });
+      }
+
+      //
+      // Handle char tapped 
+      //
+      _charTapped(event) {
+        let char = event.target.innerText;
+        let selection = this._getBufferSelection();
+        let model = this._data.uctext;
+
+        if (selection.start === selection.end) {
+          // Cursor-Pos. keine Selektion
+          if (selection.end === model.length) {
+            // Cursor ist am Ende des Texts
+            if (this._data.replaceMode === "end") {
+              this._updateUctext(model.slice(0, selection.start - 1) + char);
+            } else {
+              this._updateUctext(model + char);
+            }
+          } else {
+            // Cursor ist mitten im Text
+            let newUctext = model.slice(0, selection.start) + char + model.slice(selection.end);
+            this._updateUctext(newUctext);
+          }
+        } else {
+          //
+          // Selektion
+          //
+          let newUctext = model.slice(0, selection.start) + char + model.slice(selection.end);
+          this._updateUctext(newUctext);
+        }
+        this.set("_data.replaceMode", "std");
+
+        if (this.storage.automaticFocus === true) {
+          this.focus(0);
+        }
+      }
+      
+      //
+      // Handle changes in textbuffer and normalize text to NFC
+      //
+      _uctextChanged(event) {
+        let newValue = event.detail.value;
+        let eventSourceId = event.currentTarget.id;
+        
+        this.log().debug("_uctextChanged: New value \"" + newValue + "\" observed for path \"" + eventSourceId + "\".");
+
+        if (! this._isString(newValue)) {
+          return;
+        }
+
+        //  
+        // Abbruchbedingung für eine potentielle Endlos-Rekursion, weil auf das Setzen
+        // des normalisierten Inhalts wieder der gleiche Observer anspricht. 
+        // 
+        let normalizedNewValue = newValue.normalize("NFC");
+        if (newValue === normalizedNewValue) {
+          this.log().debug("_uctextChanged: New value already normalized -- nothing to do.");
+          return;
+        }
+
+        //
+        // Platzieren des normnalisierten Werts, der dann via Zwei-Wege-Data-Bindung
+        // im Eingabefeld landet.
+        //
+        this.log().debug("_uctextChanged: normalizing value for \"" + eventSourceId + "\".");
+        this._updateUctext(normalizedNewValue);
+      }
+
+      //
+      // Helper: Check if value is a string
+      //
+      _isString(value) {
+        return (typeof value === "string") || (value instanceof String);
+      }
+
+      //
+      // Get the selection of buffer
+      //
+      _getBufferSelection() {
+        let inputElem = this._getInputElem(this.$.mainbuffer);
+        let start = inputElem.selectionStart;
+        let end = inputElem.selectionEnd;
+        
+        // Check if you've selected text
+        if (start === end) {
+          this.log().debug("The position of the cursor is (" + start + "/" + inputElem.value.length + ")");
+        } else {
+          this.log().debug("Selected text from (" + start +" to "+ end + " of " + inputElem.value.length + ")");
+        }
+
+        return {
+          "start": start,
+          "end": end,
+        };
+      }
+
+      //
+      // Get inputelemt of paper-input
+      //
+      _getInputElem(value) {
+        // TODO: Why is inputElement not working, but _focusableElement?!?
+        return value._focusableElement;
+      }
+
+      //
+      // Update buffer preserving selection
+      //
+      _updateUctext(value) {
+        // Update value preserving the caret...
+        this.$.mainbuffer.updateValueAndPreserveCaret(value);
+      }
+
+      //
+      // News requested
+      //
+      _newsRequested(event) { // eslint-disable-line no-unused-vars
+        if (this._data.newsDontAskAgain === true) {
+          //
+          // If user requests it mark, that we have seen the news for this appversion and dataversion
+          // If dataversion or appversion changes the user will be asked, again.
+          //
+          this.set("storage.newsSeen", this._data.currentVersion);
+        }
+
+        let helpUrl = this.helpmapping["special/prefix"] + this.helpmapping["mainview/news"];
+        // Add locale (ie. this.language) to URL: e.g. lang=de
+        helpUrl = helpUrl.replace(new RegExp("\\$lang\\$","g"),this.language);
+
+        this._openWindow(helpUrl, "help");
+        this.focus();
+      }
+
+      //
+      // Dismiss news dialog
+      //
+      _newsDismiss(event) { // eslint-disable-line no-unused-vars
+        if (this._data.newsDontAskAgain === true) {
+          //
+          // If user requests it mark, that we have seen the news for this appversion and dataversion
+          // If dataversion or appversion changes the user will be asked, again.
+          //
+          this.set("storage.newsSeen", this._data.currentVersion);
+        }
+        this.focus(100);
+      }
+
+      //
+      // Focus element, i.e. main buffer
+      //
+      focus(delay = 100) {
+        let self = this;
+        let f = () => { 
+          self.log().debug("focus(): setting focus to mainbuffer");
+          let inputElem = self._getInputElem(self.$.mainbuffer);
+          inputElem.focus(); 
+        };
+
+        if (delay > 0) {
+          // Caution workaround: Some things seem to be not fully initialized at this point
+          // --> Execute things with a delay of 100 mills -- hopefully this is enough for slow browsers
+          setTimeout(f, delay);
+        } else {
+          f();
+        }
+      }
+
+      //
+      // Adjust according to config
+      //
+      _syncViewStyle(event) { // eslint-disable-line no-unused-vars
+        this.log().debug("_syncViewStyle(): called");
+        let desiredStyle = !this.storage.compactView;
+        if (this.$.collapsebuffer.opened === desiredStyle) {
+          this.log().debug("View style matches display -- nothing to do.");
+          return;
+        }
+
+        this.log().debug("Adjusting display style to match setting: opened==" + desiredStyle);
+        this.$.collapsebuffer.opened = desiredStyle;
+        this.$.collapsefilter.opened = desiredStyle;
+        this.$.collapsekeyboard.opened = desiredStyle;
+      }
+
+      //
+      // Monitor changes of configuration triggered by other instances living in other tabs on the same browser
+      //
+      _storageChanged(changeRecord) {
+        this.log().debug("_storageChanged: New value \"" + changeRecord.value + "\" observed for path \"" + changeRecord.path + "\".");
+        this._syncViewStyle();
+      }
+
+      // 
+      // Display message
+      //
+      _displayMessage(messageKey) {
+        this.$.msgtoast.text = this.localize(messageKey);
+        this.$.msgtoast.open();
+      }
+    }
+
+    window.customElements.define(vkbmain.is, vkbmain);
+  </script>
+</dom-module>

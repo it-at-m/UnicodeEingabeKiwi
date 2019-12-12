@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <meta name="Description" content="Eingabehilfe für diakritische Zeichen (String.Latin)">
+
+    <title>Kiwi</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <base href="/">
+
+    <link rel="icon" href="images/favicon.ico">
+
+    <!-- See https://goo.gl/qRE0vM -->
+    <meta name="theme-color" content="#eeeeee">
+
+    <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="application-name" content="Kiwi">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Kiwi">
+
+    <!-- Homescreen icons -->
+    <link rel="apple-touch-icon" href="images/manifest/icon-48.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/manifest/icon-72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="images/manifest/icon-96.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/manifest/icon-144.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="images/manifest/icon-192.png">
+
+    <!-- Tile icon for Windows 8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/manifest/icon-144.png">
+    <meta name="msapplication-TileColor" content="#eeeeee">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+    <script type="text/javascript" charset="utf-8" src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <!-- Add service worker -->
+    <script>
+      window.Polymer = { "rootPath": "/" };
+        
+      /* Disabled for the first versions. See also polymer.json
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("service-worker.js").then((registration) => {
+            console.log("Registered service worker successfully for scope: " + registration.scope);
+          }).catch((error) => {
+            console.log("Failed to register service worker: " + error);
+          });
+        });
+      }
+      */ 
+    </script>
+
+    <link rel="import" href="src/virtkeyb-app.html">
+
+    <!-- Add any global styles for body, document, etc. -->
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <noscript>
+      <h1 class="errorhead">Mindestvoraussetzungen für den Betrieb von <em>Kiwi</em> nicht erfüllt</h1>
+      <div class="error">
+        <em>Kiwi</em> benötigt für das korrekte Funktioniern zwei Voraussetzungen:
+        <ul>
+          <li>JavaScript muss <strong>zwingend</strong> aktiviert sein. Bitte laden aktivieren Sie JavaScript und 
+              laden Sie die Seite neu.</li>
+          </li>
+          <li>Einen hinreichend modernen Web-Browsers. Es gelten die folgenden 
+              <a href="http://wikifarmp001.srv.muenchen.de/virtualkeyb/index.php/H%C3%A4ufige_Anwenderfehler" target="help">Mindestanforderungen</a>.
+          </li>
+        </ul>
+      </div>
+    </noscript>
+    <div>
+      <!-- Kiwi -->
+      <virtkeyb-app></virtkeyb-app>
+
+      <div id="footer">
+        <a href="https://muenchen.digital/it-at-m/" target="itatm" id="itatm">
+          <img id="itmlogo" src="images/itm_logo.svg" alt="it@M" title="it@M">
+        </a>
+        <a href="https://www.muenchen.de/" target="cityofmunich" id="cityofmunich">
+          <img id="lhmlogo" src="images/lhm-logo.svg" alt="Landeshauptstadt München" title="Landeshauptstadt München">
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

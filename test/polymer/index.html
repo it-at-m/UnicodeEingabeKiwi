@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Tests</title>
+
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+  </head>
+  <body>
+    <!-- 
+      Run tests: Point web-browser to [...]/test/polymer/index.html 
+      -->
+    <script>
+      WCT.loadSuites([
+        "virtkeyb-app-wcag_test.html?wc-shadydom=true",
+        "virtkeyb-app_test.html?wc-shadydom=true",
+        "vkb-model_test.html?wc-shadydom=true",
+      ]);
+    </script>
+  </body>
+</html>

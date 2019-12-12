@@ -1,0 +1,25 @@
+--- bower_components/paper-styles/typography.html	2018-09-27 17:00:05.583458761 +0200
++++ bower_components/paper-styles/typography.html	2018-09-27 17:00:18.119458588 +0200
+@@ -25,12 +25,12 @@
+ 
+       /* Shared Styles */
+       --paper-font-common-base: {
+-        font-family: 'Roboto', 'Noto', sans-serif;
++        font-family: sans-serif;
+         -webkit-font-smoothing: antialiased;
+       };
+ 
+       --paper-font-common-code: {
+-        font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
++        font-family: monospace;
+         -webkit-font-smoothing: antialiased;
+       };
+ 
+--- bower_components/font-roboto/roboto.html	2018-05-22 18:02:27.999447229 +0200
++++ bower_components/font-roboto/roboto.html	2018-05-22 18:02:15.779447595 +0200
+@@ -7,4 +7,4 @@
+ Code distributed by Google as part of the polymer project is also
+ subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ -->
+-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,300,300italic,400italic,500,500italic,700,700italic" crossorigin="anonymous">
++

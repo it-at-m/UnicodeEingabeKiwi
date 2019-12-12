@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.muenchen.uc</groupId>
+    <artifactId>kiwi-polymer</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>kiwi-polymer</name>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <!-- 
+           Version and build timestamp due to inability to pin bower dependencies 
+          -->
+        <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+        <appversion>1.0.3</appversion>
+        <buildno>${maven.build.timestamp}</buildno>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>build</directory>
+                <targetPath>static</targetPath>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/locales.json</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>build</directory>
+                <targetPath>static</targetPath>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/locales.json</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>bower_components</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>node_modules</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>build</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>remove-roboto-font</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>patch</executable>
+                            <arguments>
+                                <argument>-p0</argument>
+                                <argument>-i</argument>
+                                <argument>patches/rm-roboto.patch</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!-- Reassign processing of resources to later goal -->
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <delimiters>
+                                <delimiter>${*}</delimiter>
+                                <delimiter>%%</delimiter>
+                            </delimiters>
+                        </configuration>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement> 
+    </build>
+
+    <profiles>
+        <!--
+           Run lint for JavaScript
+          -->
+        <profile>
+            <id>with-eslint</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>exec-run-eslint</id>
+                                <phase>validate</phase>
+                                <configuration>
+                                    <executable>eslint</executable>
+                                    <arguments>
+                                        <argument>src/*.html</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+           Run tests
+
+           Caution: To used this profile bis deactivate the profile "with-build"!
+          -->
+        <profile>
+            <id>with-tests</id>
+
+            <build>
+                <plugins>
+                   <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <!-- 
+                               Deploy non-production resources, too. 
+                               Non-production resources are need for test execution.
+                              -->
+                            <execution>
+                                <id>exec-bower-install</id>
+                                <phase>process-sources</phase>
+                                <configuration>
+                                    <executable>bower</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>exec-npm-install</id>
+                                <phase>process-sources</phase>
+                                <configuration>
+                                    <executable>npm</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+
+                            <!-- Not yet working
+                                execution>
+                                <id>exec-polymer-test</id>
+                                <phase>test</phase>
+                                <configuration>
+                                    <executable>polymer</executable>
+                                    <arguments>
+                                        <argument>test</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution -->
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+          Run actual build
+          -->
+        <profile>
+            <id>with-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <!-- 
+                               Install only production resources to
+                               avoid bloated sources.
+                              -->
+                            <execution>
+                                <id>exec-bower-install</id>
+                                <phase>process-sources</phase>
+                                <configuration>
+                                    <executable>bower</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                        <argument>--production</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>exec-npm-install</id>
+                                <phase>process-sources</phase>
+                                <configuration>
+                                    <executable>npm</executable>
+                                    <arguments>
+                                        <argument>install</argument>
+                                        <argument>--production</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>exec-polymer-build</id>
+                                <phase>process-resources</phase>
+                                <configuration>
+                                    <executable>polymer</executable>
+                                    <arguments>
+                                        <argument>build</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

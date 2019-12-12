@@ -1,0 +1,27 @@
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<script>
+    (function() {
+      LogBehavior = { // eslint-disable-line no-undef
+        
+        __data: {
+          log: null,
+        },
+
+        configLog: function(logLevel) {
+          let proto = this.constructor.prototype;
+
+          if (! proto.__data.log) {
+            proto.__data.log = log.noConflict(); // eslint-disable-line no-undef
+            proto.__data.log.setDefaultLevel(logLevel);
+          }
+        },
+
+        log: function() {
+          let proto = this.constructor.prototype;
+          return proto.__data.log;
+        },
+      };
+    })();
+</script>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>virtkeyb-app test</title>
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/virtkeyb-app.html">
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <virtkeyb-app></virtkeyb-app>
+      </template>
+    </test-fixture>
+    
+    <script>
+      suite("virtkeyb-app", function() {
+        test("instantiating the element works", function() {
+          let element = fixture("BasicTestFixture");
+          // assert.equal(element.prop1, "virtkeyb-app");
+          let elementShadowRoot = element.shadowRoot;
+          // let elementHeader = elementShadowRoot.querySelector("h2");
+          // assert.equal(elementHeader.innerHTML, "Hello virtkeyb-app!");
+        });
+      });
+    </script>
+
+  </body>
+</html>

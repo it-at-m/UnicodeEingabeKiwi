@@ -1,0 +1,60 @@
+{
+    "extends": [ 
+        "eslint:recommended"
+    ],
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "plugins": [
+        "html"
+    ],
+    "rules": {
+        "prefer-const": [
+            "off"
+        ],
+        "indent": [
+            "error",
+            2
+        ],
+        "arrow-parens": [ 
+            "error", 
+            "always" 
+        ],
+        "array-bracket-spacing": [
+            "error", 
+            "always", { 
+                "arraysInArrays": false 
+            }
+        ],            
+	    "no-console": "off",
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],        
+        "semi": [
+            "error",
+            "always"
+        ],
+        "require-jsdoc": "off",
+        "no-trailing-spaces": "off",
+        "max-len": [
+            "error", 240, 2
+        ],
+        "new-cap": [
+            "error", 
+            { 
+                "capIsNewExceptions": [
+                    "Polymer"
+                ] 
+            }
+        ]        
+    },
+    "globals": {
+      "Polymer": true
+    }
+}

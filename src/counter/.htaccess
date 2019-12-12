@@ -1,0 +1,23 @@
+
+#
+# .htaccess:
+#
+# Caution: mod_headers and mod_expires required
+# 
+
+#
+# Disable caching on all reources in this dir completely
+#
+ExpiresDefault "now"
+Header set Cache-Control "max-age=0, private, no-cache"
+
+#
+# Prevent Apache from serving .htaccess files:
+#
+<FilesMatch "^\.htaccess">
+    Require all denied
+</FilesMatch>
+
+#
+# End of .htaccess file
+#

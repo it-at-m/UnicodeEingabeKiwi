@@ -1,0 +1,51 @@
+{
+  "name": "VirtKeyb",
+  "entrypoint": "index.html",
+  "shell": "src/virtkeyb-app.html",
+  "fragments": [
+    "src/vkb-main.html",
+    "src/vkb-history.html",
+    "src/vkb-notavailable.html"
+  ],
+  "sources": [
+    "src/**/*",
+    "images/**/*",
+    "src/counter/.htaccess",
+    ".htaccess"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/*",
+    "node_modules/**/*",
+    "sw-precache-config.js",
+    "index.css"
+  ],
+  "lint": {
+    "rules": [ "polymer-2" ]
+  },
+  "npm": true,
+  "builds": [
+    {
+      "name": "es6-root-test",
+      "js": { "minify": false, "compile": false },
+      "css": { "minify": false },
+      "html": { "minify": false },
+      "bundle": false,
+      "addServiceWorker": false,
+      "swPrecacheConfig": "sw-precache-config.js",
+      "addPushManifest": false,
+      "insertPrefetchLinks": false,
+      "basePath": "/",
+      "stripComments": "true"
+    },
+    {
+      "name": "es6-root-optimized",
+      "preset": "es6-bundled",
+      "swPrecacheConfig": "sw-precache-config.js",
+      "addPushManifest": false,
+      "basePath": "/",
+      "stripComments": "true",
+      "sourcemaps": "true"
+    }
+  ]
+}

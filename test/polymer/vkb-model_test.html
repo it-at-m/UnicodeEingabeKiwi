@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>vkb-model test</title>
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+
+    <link rel="import" href="../../src/vkb-model.html">
+    <link rel="import" href="../../bower_components/test-fixture/test-fixture.html">
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <vkb-model lang="de" loglevel="debug" modellocation="../test/polymer/vkb-model_test.xml">
+        </vkb-model>
+      </template>
+    </test-fixture>
+    
+    <script>
+      "use strict";
+
+      /* eslint no-undef: 0 */
+
+      mocha.setup("tdd");
+      suite("vkb-model", () => {
+        let model = null;
+
+        //
+        // "before" is enough, since  model is stateless
+        //
+        before(() => {
+          model = fixture("BasicTestFixture");
+        });
+
+        //
+        // getModelProperties() 
+        //
+        test("Get model properties", () => {
+          return model.getModelProperties().then((mp) => {
+            expect(mp.name).to.be.equal("String Latin 1.2");
+            expect(mp.dataversion).to.be.equal("1");
+          });
+        });
+
+        //
+        // getAllProfiles() 
+        //
+        test("Get profiles in the correct way", () => {
+          return model.getAllProfiles().then((ps) => {
+            expect(ps.length).to.be.equal(3);
+
+            expect(ps[0].seq).to.be.equal(1);
+            expect(ps[0].id).to.be.equal("asia");
+            expect(ps[0].name).to.be.equal("Asien");
+
+            expect(ps[1].seq).to.be.equal(2);
+            expect(ps[1].id).to.be.equal("europe");
+            expect(ps[1].name).to.be.equal("Europa");
+
+            expect(ps[2].seq).to.be.equal(3);
+            expect(ps[2].id).to.be.equal("din");
+            expect(ps[2].name).to.be.equal("DIN");
+          });
+        });
+
+        //
+        // getBasecharByChar(char, type, onlyNormative)
+        //
+        test("Get normative basechar by real char single code-point", () => {
+          return model.getBasecharByChar("ǎ", "real", true).then((bc) => {
+            expect(bc).to.be.equal("a");
+          });
+        });
+
+        test("Get normative basechar by real char multible code-points", () => {
+          return model.getBasecharByChar("m̂", "real", true).then((bc) => {
+            expect(bc).to.be.equal("m");
+          });
+        });
+
+        test("Get non-normative basechar by real char single code-point", () => {
+          return model.getBasecharByChar("€", "real", false).then((bc) => {
+            expect(bc).to.be.equal("$");
+          });
+        });
+
+        test("Get non-normative basechar by real char multible code-points", () => {
+          return model.getBasecharByChar("L̥̄", "real", false).then((bc) => {
+            expect(bc).to.be.equal("L");
+          });
+        });
+
+        /**
+          No tests for type === "pseudo, because there is currently no useful 
+          domain logic for that case
+         */
+
+        //
+        // getFilteredChars()
+        //
+        test("Get all normative chars", () => {
+          return model.getFilteredChars("", "", "", true, true).then((cs) => {
+            expect(cs.length).to.be.equal(79);
+          });
+        });
+
+        test("Get all (normative and non-normative) chars", () => {
+          return model.getFilteredChars("", "", "", true, false).then((cs) => {
+            expect(cs.length).to.be.equal(81);
+          });
+        });
+
+        test("Filter normative chars by real and pseudo basechar case-sensitive", () => {
+          return model.getFilteredChars("", "a", "", false, true).then((cs) => {
+            expect(cs.length).to.be.equal(25);
+          });
+        });
+
+        test("Filter normative chars by real and pseudo basechar case-insensitive", () => {
+          return model.getFilteredChars("", "a", "", true, true).then((cs) => {
+            expect(cs.length).to.be.equal(51);
+          });
+        });
+
+        test("Filter normative chars by real and pseudo basechar case-sensitive plus profile", () => {
+          return model.getFilteredChars("europe", "a", "", false, true).then((cs) => {
+            expect(cs.length).to.be.equal(8);
+          });
+        });
+
+        test("Filter normative chars by real and pseudo basechar case-insensitive plus profile", () => {
+          return model.getFilteredChars("europe", "a", "", true, true).then((cs) => {
+            expect(cs.length).to.be.equal(17);
+          });
+        });
+      });
+
+      /* eslint no-undef: 0 */
+    </script>
+
+  </body>
+</html>

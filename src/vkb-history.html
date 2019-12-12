@@ -1,0 +1,80 @@
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<link rel="import" href="jslibs.html">
+<link rel="import" href="vkb-shared-styles.html">
+<link rel="import" href="shared-logic.html">
+<link rel="import" href="log-behavior.html">
+
+<dom-module id="vkb-history">
+  <template>
+    <style include="vkb-shared-styles">
+    </style>
+    
+    <div>
+        <h1><a href="#">[[ localize('history_heading') ]]</a></h1>
+    </div>
+  </template>
+
+  <script>
+    class vkbhistory extends Polymer.mixinBehaviors([ SharedLogicBehavior, LogBehavior, Polymer.AppLocalizeBehavior, Polymer.IronA11yKeysBehavior ], Polymer.Element) { // eslint-disable-line no-undef
+      static get is() {
+        return "vkb-history";
+      }
+      
+      static get properties() {
+        return {
+          "rootPath": String,
+
+          "loglevel": {
+            "type": String,
+            "value": "warn",
+          },
+
+          "language": {
+            "type": String,
+            "value": "de",
+          },
+        };
+      }
+
+      //
+      // ctor
+      //
+      connectedCallback() {
+        super.connectedCallback();
+        this.configLog(this.loglevel);
+        this.log().debug("connectedCallback(): Running ctor");
+
+        //
+        // Load localization
+        //
+        this.loadResources(this.resolveUrl("locales.json"));
+
+        let self = this; // eslint-disable-line no-unused-vars
+        Polymer.RenderStatus.afterNextRender(this, () => {
+          // self.focus();
+        });
+      }
+
+      //
+      //
+      // 
+      focus() {
+        //
+        // TODO: Unless we have no different element we focus th heading
+        //       Later, when there are UI elements, we shall focus those
+        //
+        let primaryElem = Polymer.dom(this.root).querySelector("h1 a");
+        if (primaryElem) {
+          this.log().debug("focus(): setting focus to primary elem.");
+          primaryElem.focus();
+        }
+      }
+    }
+
+    window.customElements.define(vkbhistory.is, vkbhistory);
+  </script>
+</dom-module>
