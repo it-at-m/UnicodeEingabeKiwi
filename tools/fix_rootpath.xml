@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="FixRootPath" default="main">
+
+    <target name="main">
+        <macrodef name="fix_rootpath">
+            <attribute name="path" />
+            <attribute name="finalpath" />
+            <attribute name="loglevel" />
+            <sequential>
+                <echo message="Postprocessing build @{path}"/>
+
+                <replace file="@{path}/manifest.json">
+                    <replacefilter token='"start_url": "/' value='"start_url": "@{finalpath}' />
+                </replace>
+
+                <replaceregexp file="@{path}/sw-precache-config.js" flags="mg">
+                    <regexp pattern='(["&apos;])/' />
+                    <substitution expression='\1@{finalpath}' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/src/notfound.html" flags="m">
+                    <regexp pattern='"0;\s+URL=/"'/>
+                    <substitution expression='"0; URL=@{finalpath}"' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/index.html" flags="mg">
+                    <regexp pattern='\{\s*"?rootPath"?:\s*"/"\s*\}' />
+                    <substitution expression='{ "rootPath": "@{finalpath}" }' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/index.html" flags="mg">
+                    <regexp pattern='&lt;base\s+href="/"\s*&gt;' />
+                    <substitution expression='&lt;base href="@{finalpath}"&gt;' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/index.html" flags="mg">
+                    <regexp pattern=' loglevel="debug"' />
+                    <substitution expression=' loglevel="@{loglevel}"' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/src/embedding/tools.js" flags="mg">
+                    <regexp pattern='\{\s*"?rootPath"?:\s*"/"\s*\}' />
+                    <substitution expression='{ "rootPath": "@{finalpath}" }' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/src/embedding/tools-polymer.js" flags="mg">
+                    <regexp pattern='\{\s*"?rootPath"?:\s*"/"\s*\}' />
+                    <substitution expression='{ "rootPath": "@{finalpath}" }' />
+                </replaceregexp>
+
+                <replaceregexp file="@{path}/.htaccess" byline="true">
+                    <regexp pattern='ErrorDocument\s+(4..)\s+/src/' />
+                    <substitution expression='ErrorDocument \1 @{finalpath}src/' />
+                </replaceregexp>
+            </sequential>
+        </macrodef>
+
+        <!--
+           Required properties:
+           src:     abs path for source dir
+           dest:    abs path for dest dir
+           context: path on web-server
+           log:     Loglevel
+          -->
+        <copy todir="${frp.dest}">
+            <fileset dir="${frp.src}"/>   
+        </copy>
+        <fix_rootpath path="${frp.dest}" finalpath="${frp,context}" loglevel="${frp.log}" />
+    </target>
+</project>
