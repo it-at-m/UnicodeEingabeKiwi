@@ -5,7 +5,7 @@
 
 *Lateinische Zeichen in Unicode* ist ein Standard, der von der [Koordinierungsstelle für IT-Standards (KOSIT)](https://www.xoev.de/) im Auftrag des [IT-Planungsrats](https://www.it-planungsrat.de/) erstellt wurde. Zusammengefasst wird darin für die deutsche öffentliche Verwaltung verbindlich definiert, was unter Unicode-konformer Verarbeitung mindestens verstanden wird. Mit der [Entscheidung 2014/04](http://www.it-planungsrat.de/DE/Entscheidungen/2014/13_Sitzung/13_Sitzung_Entscheidungen.html) hat der IT-Planungsrat in seiner 13. Sitzung den Zeichensatz *Lateinische Zeichen in UNICODE* festgelegt, der von IT-Verfahren in der Bundesrepublik Deutschland unterstützt werden muss.
 
-Siege auch:
+Siehe auch:
 * [Wikipedia](https://de.wikipedia.org/wiki/Lateinische_Zeichen_in_Unicode)
 * [KOSIT](https://www.xoev.de/detail.php?gsid=bremen83.c.4813)
 
@@ -33,9 +33,9 @@ Wenn eine Weiterentwicklung angestrebt wird, dann empfehlen sich darüber hinaus
 
  (a) Nicht notwendig, wenn unter Windows mit der GIT-Shell gearbeitet wird.
 
-## tl;dr ##
+## TL;DR ##
 ### Zu Entwicklungszwecken oder zum Ansehen ##
-*Hinweis*: Für das Deploiyment empfiehlt sich ein echter Build (siehe Kapitel *Für Deployment / Betrieb*), weil damit weitere Dinge automatisiert werden.
+*Hinweis*: Für das Deployment empfiehlt sich ein echter Build (siehe Kapitel *Für Deployment / Betrieb*), weil damit weitere Dinge automatisiert werden.
 
 Vorgehen:
 
@@ -80,11 +80,11 @@ Das Build-System basiert auf Maven und integriert die für einen erfolgreichen B
 
 Die verwendente Version 2 von Polymer setzt auf [Bower](https://bower.io/) auf. Bower erlaubt Stand Juli 2019 nicht, die Dependencies (genauer deren Version) zu pinnen. Viel mehr setzt Bower auf [Semantic Versioning](https://semver.org/lang/de/), bei dem der Ersteller der Komponenten anhand der vergebenen dreiteilige Versionsnummer dokumentiert, ob und wie kompatibel eine Version der Komponente mit einer anderen Version ist. Die Syntax der Versionsbezeichnungen für Polymer (und auch *npm*; in Verwendung für ein paar nur dort verfügbare Polyfills; dort kann die Version aber sehr wohl gepinnt werden!) kann in einem [Stack-Overflow-Artikel](https://stackoverflow.com/questions/19030170/what-is-the-bower-and-npm-version-syntax) nachgelesen werden. Zusammengefasst: Ein Build kann nicht zu 100% reprodziert werden. Aus diesem Grund gibt es zur Hilfe bei der Identifikation der Version neben der Version eine Build-Nummer. 
 
-Das es nicht ausreicht, auf Basis der Version aus dem Versionkontrollsystem eine alte Version neu zu bauen, ist es sinnvoll das Build-Ergebnis zu archvieren. Dazu empfiehlt sich der Archvierung des folgenden Artefakts: *~/.m2/repository/de/muenchen/uc/kiwi-polymer/1.0.0-SNAPSHOT/kiwi-polymer-1.0.0-SNAPSHOT.jar*, wobei die Versionsbezeichnungen und die Build-Nummer in den Dateinamen aufgenommen werden sollte.
+Da es nicht ausreicht, auf Basis der Version aus dem Versionkontrollsystem eine alte Version neu zu bauen, sollte man das Build-Ergebnis archvieren. Dazu empfiehlt sich die Archvierung des folgenden Artefakts: *~/.m2/repository/de/muenchen/uc/kiwi-polymer/1.0.0-SNAPSHOT/kiwi-polymer-1.0.0-SNAPSHOT.jar*, wobei die Versionsbezeichnungen und die Build-Nummer in den Dateinamen aufgenommen werden sollte.
 
 ### Tests ausführen ###
 
-1. Starten des in der Polymer-CLI eingebauten Web-Servers im diesem Verzeichnis.
+1. Starten des in der Polymer-CLI eingebauten Web-Servers in diesem Verzeichnis.
     * I.d.R. wird hier unter [Localhost auf Port 8081](http://localhost:8081) ein Web-Server gestartet. In nachfolgenden Beschreibungen wird davon ausgegangen.
 2. Starten eines Test-Builds
     * Hinweis: Leider muss man sich zu Beginn eines Builds entscheiden, ob das Ergebnis ein Release-Build oder ein Test-Build (= Build für die Durchführung von Tests) sein soll. In der Folge kann daraus ohne einen vollständigen (Re-)Build kein Release-Build angestossen werden.
@@ -163,7 +163,7 @@ Sowohl *bower* als auch *npm* benutzen [semantic versioning](https://semver.org/
 * Der Aufbau der XML-Datei ist in Form von Inline-(XML-)Kommentaren in der XML-Datei selbst und im [XMLSchema](src/model/stringlatin-v2.xsd) dokumentiert.
 
 ### Fonts ###
-Die Darstellung von Zeichen mit Diakritika ist aufgrund der feinen Unterschiede für die Render-Engine des Browsers anspruchsvoll. Nachdem HTML seit der Version 2.0 Unicode fordert, sind die Browser bei der Darstellung von Zeichen mit Diakritika sehr gut. Damit die Render-Engine bei der Darstellung von Zeichen ihre Stärken ausspielen kann, empfiehlt es sich dem Browser keine all zu engen Vorgaben zu machen. Aus diesem Grund benutzt die Anwendung als Fontstack nur den Font *sans-serif* und die im Polymer-Framework vorhandenen Referenzen auf *fonts.googleapis.com* und die *Noto-* und *Roboto-Fonts* werden beim Build-Vorgang [herausgepatcht](patches/rm-roboto.patch): 
+Die Darstellung von Zeichen mit Diakritika ist aufgrund der feinen Unterschiede für die Render-Engine des Browsers anspruchsvoll. Nachdem HTML seit der Version 2.0 Unicode fordert, sind die Browser bei der Darstellung von Zeichen mit Diakritika sehr gut. Damit die Render-Engine bei der Darstellung von Zeichen ihre Stärken voll ausspielen kann, sollte man dem Browser keine all zu engen Vorgaben zu machen. Aus diesem Grund benutzt die Anwendung als Fontstack nur den Font *sans-serif* und die im Polymer-Framework vorhandenen Referenzen auf *fonts.googleapis.com* und die *Noto-* und *Roboto-Fonts* werden beim Build-Vorgang [herausgepatcht](patches/rm-roboto.patch): 
 
 ### Lizenzen ###
 * Bei der Auswahl der Komponenten, die in KIWI verwendet werden, wurde darauf geachtet, dass sie freien Lizenzen unterliegen, die die Verwendung / Nutzung in keiner Weise einschränken.
