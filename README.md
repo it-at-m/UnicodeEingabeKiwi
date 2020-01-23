@@ -34,7 +34,11 @@ Wenn eine Weiterentwicklung angestrebt wird, dann empfehlen sich darüber hinaus
  (a) Nicht notwendig, wenn unter Windows mit der GIT-Shell gearbeitet wird.
 
 ## TL;DR ##
-### Zu Entwicklungszwecken oder zum Ansehen ##
+### Testen ###
+Hier gibt es eine Demo, die kein offizieller Service der Stadt München ist, aber zum Ausprobieren trotzdem gut eignet: [https://it-at-m.github.io/KiwiDemo/](https://it-at-m.github.io/KiwiDemo/) Für eine professionelle Nutzung empfehlen wir eine Installation auf einem eigenen, dedizierten Server.
+
+
+### Bauen zu Entwicklungszwecken oder zum Ansehen ##
 *Hinweis*: Für das Deployment empfiehlt sich ein echter Build (siehe Kapitel *Für Deployment / Betrieb*), weil damit weitere Dinge automatisiert werden.
 
 Vorgehen:
