@@ -401,7 +401,6 @@
                 <basechar type="pseudo" name="[" name-ci="[" />
                 <basechar type="pseudo" name="]" name-ci="]" />
                 <basechar type="pseudo" name="\" name-ci="\" />
-                <basechar type="pseudo" name="&apos;" name-ci="&apos;" />
                 <basechar type="pseudo" name="_" name-ci="_" />
                 <basechar type="pseudo" name="×" name-ci="×" />
                 <basechar type="pseudo" name="€" name-ci="€" />
