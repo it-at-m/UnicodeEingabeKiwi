@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="FixVersion" default="main">
+
+    <target name="main">
+        <macrodef name="fix_version">
+            <attribute name="src" />
+            <attribute name="appversion" />
+            <attribute name="buildno" />
+            <sequential>
+                <echo message="Postprocessing build @{src}"/>
+
+                <replaceregexp file="@{src}/src/locales.json" flags="mg">
+                    <regexp pattern='%%appversion%%'/>
+                    <substitution expression='@{appversion}' />
+                </replaceregexp>
+
+                <replaceregexp file="@{src}/src/locales.json" flags="mg">
+                    <regexp pattern='%%buildno%%'/>
+                    <substitution expression='@{buildno}' />
+                </replaceregexp>
+            </sequential>
+        </macrodef>
+
+        <!--
+           Required properties:
+           fv.src:        abs path for source dir
+           fv.appversion: path on web-server
+           fv.buildno:    buildno
+          -->
+        <fix_version src="${fv.src}" appversion="${fv.appversion}" buildno="${fv.buildno}" />
+    </target>
+</project>
+

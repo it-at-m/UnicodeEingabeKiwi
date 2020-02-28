@@ -58,14 +58,15 @@
 
         <!--
            Required properties:
-           src:     abs path for source dir
-           dest:    abs path for dest dir
-           context: path on web-server
-           log:     Loglevel
+           frp.src:     abs path for source dir
+           frp.dest:    abs path for dest dir
+           frp.context: path on web-server
+           frp.log:     Loglevel
           -->
         <copy todir="${frp.dest}">
             <fileset dir="${frp.src}"/>   
         </copy>
-        <fix_rootpath path="${frp.dest}" finalpath="${frp,context}" loglevel="${frp.log}" />
+        <fix_rootpath path="${frp.dest}" finalpath="${frp.context}" loglevel="${frp.log}" />
     </target>
 </project>
+
