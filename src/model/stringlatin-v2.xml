@@ -26,7 +26,7 @@
         02.10.2019:        Serbokroatische / Vietnamesicher Buchstaben "đ", "Đ" in die Gruppe "Asien" aufgenommen. Mouseover Text bei "Đ" um Vietnamesisch erweitert.
         14.11.2019:        MASCULINE ORDINAL INDICATOR "º" ist unter "o" zu finden /  FEMININE ORDINAL INDICATOR "ª" ist unter "a" zu finden
         12.12.2019:        pseudo name = "o" für das Zeichen "ð" cp: 00F0 entfernt
-        26.02.2020:        00A4 - CURRENCY SIGN, 00A6 - BROKEN BAR, 00B8 - CEDILLA, 00BC - VULGAR FRACTION ONE QUARTER, 00BD - VULGAR FRACTION ONE HALF, 00BE - VULGAR FRACTION THREE QUARTERS
+        26.02.2020:        00A4 - CURRENCY SIGN, 00A6 - BROKEN BAR, 00BC - VULGAR FRACTION ONE QUARTER, 00BD - VULGAR FRACTION ONE HALF, 00BE - VULGAR FRACTION THREE QUARTERS
                            auf normative="true" gesetzt und zugehörige Basechars ergänzt
         -->
 
@@ -3347,39 +3347,10 @@
                 <basechar type="pseudo" name="ª" name-ci="ª" />
         </char>
 
-        <char name="¸" normative="true">
+        <char name="¸" normative="false">
                 <!--  cp: 00B8 CEDILLA-->
                 <profile ref="non-letter" />
                 <profile ref="sz" />
-                <basechar type="real" name="¸" name-ci="¸" />
-                <basechar type="pseudo" name="°" name-ci="°" />
-                <basechar type="pseudo" name="^" name-ci="^" />
-                <basechar type="pseudo" name="`" name-ci="`" />
-                <basechar type="pseudo" name="¡" name-ci="¡" />
-                <basechar type="pseudo" name="¢" name-ci="¢" />
-                <basechar type="pseudo" name="£" name-ci="£" />
-                <basechar type="pseudo" name="©" name-ci="©" />
-                <basechar type="pseudo" name="«" name-ci="«" />
-                <basechar type="pseudo" name="¬" name-ci="¬" />
-                <basechar type="pseudo" name="®" name-ci="®" />
-                <basechar type="pseudo" name="±" name-ci="±" />
-                <basechar type="pseudo" name="¶" name-ci="¶" />
-                <basechar type="pseudo" name="·" name-ci="·" />
-                <basechar type="pseudo" name="»" name-ci="»" />
-                <basechar type="pseudo" name="¿" name-ci="¿" />
-                <basechar type="pseudo" name="¨" name-ci="¨" />
-                <basechar type="pseudo" name="´" name-ci="´" />
-                <basechar type="pseudo" name="µ" name-ci="µ" />
-                <basechar type="pseudo" name="¹" name-ci="¹" />
-                <basechar type="pseudo" name="¯" name-ci="¯" />
-                <basechar type="pseudo" name="²" name-ci="²" />
-                <basechar type="pseudo" name="³" name-ci="³" />
-                <basechar type="pseudo" name="º" name-ci="º" />
-                <basechar type="pseudo" name="ª" name-ci="ª" />
-                <basechar type="pseudo" name="Y" name-ci="y" />
-                <basechar type="pseudo" name="$" name-ci="$" />
-                <basechar type="pseudo" name="€" name-ci="€" />
-                <basechar type="pseudo" name="¥" name-ci="¥" />
         </char>
 
         <char name="¹" normative="true">
