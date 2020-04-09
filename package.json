@@ -5,7 +5,7 @@
   "dependencies": {
     "clipboard-polyfill": "^2.8.6",
     "grapheme-splitter": "^1.0.4",
-    "loglevel": "^1.6.6",
+    "loglevel": "^1.6.7",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
