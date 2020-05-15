@@ -181,18 +181,8 @@
             };
           });
 
-          // 
-          // Sort according to unicode except for basechar, which has to be the first in any case.
-          // We assume here, that the a basechar has itsself always as basechar...
-          //
           chars.sort((a, b) => {
-            if (a.name === basechar) {
-              return -1;
-            } else if (b.name === basechar) {
-              return 1;
-            } else {
-              return this._data.collator.compare(a.name, b.name);
-            }
+            return this._data.collator.compare(a.name, b.name);
           });
 
           return chars;
