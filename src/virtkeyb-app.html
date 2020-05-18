@@ -146,7 +146,7 @@
 
       <div id="contentarea">
         <iron-pages id="viewselector" selected="[[ page ]]" attr-for-selected="name" fallback-selection="notfound" role="main">
-          <vkb-main name="main" id="mainview" loglevel="[[ loglevel ]]" model="{{ _data.model }}" storage="{{ storage }}" 
+          <vkb-main name="main" id="mainview" loglevel="[[ loglevel ]]" model="{{ _data.model }}" storage="{{ storage }}"
               helpmapping="{{ _data.helpMapping }}" mode="[[ mode ]]" inputelement="{{ inputelement }}" font$="[[ _computeStyle(storage.serifStyle) ]]">
           </vkb-main>
           <vkb-history name="history" id="historyview" loglevel="[[ loglevel ]]" >
@@ -212,6 +212,11 @@
           "loglevel": {
             "type": String,
             "value": "warn",
+          },
+
+          "dfltprofile": {
+            "type": String,
+            "value": "all",
           },
 
           "language": {
@@ -358,11 +363,15 @@
           //
           // Default Configuration
           //
+          let self = this;
           this.set("storage.automaticFocus", true);
           this.set("storage.compactView", false);
           this.set("storage.newsSeen", "");
           this.set("storage.filterCaseInsensitive", false);
-          this.set("storage.filterRegion", 0);
+          let dfltmodel_id = this.$.model.getAllProfiles().then((ap) => {
+            let profile = ap.find(p => p.id === self.dfltprofile);
+            self.set("storage.filterRegion", (profile) ? profile.seq : 0);
+          });
           this.set("storage.serifStyle", false);
 
           //
