@@ -140,7 +140,7 @@
        * @param {boolean} onlyNormative Flag only normative chars are selected
        * @return {Promise} Array of all chars
        */
-      getFilteredChars(profileid, basechar, type, cases = "undef", onlyNormative = true) {
+      getFilteredChars(profileid, basechar, type, cases, onlyNormative = true) {
         let self = this;
         
         return this._ensureData(() => {
@@ -154,14 +154,17 @@
           }
 
           if (basechar) {
+            //
+            // Basechar existing -> Search for basechar war requested
+            //
             expr.push("sl:basechar/@name-ci=" + self._getStringLiteralForXPath(basechar.toLowerCase()));
             if ((type === "real") || (type === "pseudo")) {
               expr.push("sl:basechar/@type=\"" + type + "\"");
             }
           }
 
-          if (cases) {
-            expr.push("sl:basechar/@case=" + self._getStringLiteralForXPath(cases));
+          if ((cases === "capital") || (cases === "small")) {
+            expr.push("((@case=\"" + cases + "\") or (@case = \"undef\"))");
           }
 
           let xpath = "";
@@ -233,6 +236,25 @@
 
           return basechar;
         }, "getBasecharByChar()");
+      }
+
+      /**
+       * Find case of char 
+       * /sl:stringlatin/sl:char[name="a"]/@case"
+       *
+       * @param {string} char The char sequence for the grapheme
+       * @return {Promise} Strings constant describing the case
+       */
+      getCaseOfChar(char) {
+        let self = this;
+
+        return this._ensureData(() => {
+
+          let xpath = "/sl:stringlatin/sl:char[@name=" + self._getStringLiteralForXPath(char) + "]/@case";
+          let casing = self._getStringsByXPath(xpath, this._data.xmlDom);
+
+          return casing[0];
+        }, "getCaseOfChar()");
       }
 
       /**

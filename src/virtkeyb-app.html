@@ -146,7 +146,7 @@
 
       <div id="contentarea">
         <iron-pages id="viewselector" selected="[[ page ]]" attr-for-selected="name" fallback-selection="notfound" role="main">
-          <vkb-main name="main" id="mainview" loglevel="[[ loglevel ]]" model="{{ _data.model }}" storage="{{ storage }}"
+          <vkb-main name="main" id="mainview" loglevel="[[ loglevel ]]" model="{{ _data.model }}" storage="{{ storage }}" dfltprofile="[[ dfltprofile ]]"
               helpmapping="{{ _data.helpMapping }}" mode="[[ mode ]]" inputelement="{{ inputelement }}" font$="[[ _computeStyle(storage.serifStyle) ]]">
           </vkb-main>
           <vkb-history name="history" id="historyview" loglevel="[[ loglevel ]]" >
@@ -348,7 +348,7 @@
       // Update or initialize model, i.e. peristent konfiguration
       // 
       _updateOrResetStorageModel() {
-        const currentStorageModelVersion = 1;
+        const currentStorageModelVersion = 2;
 
         //
         // Init local storage
@@ -367,11 +367,11 @@
           this.set("storage.automaticFocus", true);
           this.set("storage.compactView", false);
           this.set("storage.newsSeen", "");
-          this.set("storage.filterCaseInsensitive", false);
-          let dfltmodel_id = this.$.model.getAllProfiles().then((ap) => {
-            let profile = ap.find(p => p.id === self.dfltprofile);
+          this.$.model.getAllProfiles().then((ap) => {
+            let profile = ap.find((p) => p.id === self.dfltprofile);
             self.set("storage.filterRegion", (profile) ? profile.seq : 0);
           });
+          this.set("storage.filterCases", 0);    
           this.set("storage.serifStyle", false);
 
           //
