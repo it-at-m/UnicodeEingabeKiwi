@@ -136,11 +136,11 @@
        * @param {string} profileid The profile or ""
        * @param {string} basechar The basechar 
        * @param {string} type The type of basechar: real, pseudo or ""
-       * @param {boolean} caseInsensitive Flag if basechar is case-insensitive
+       * @param {string} cases One of "capital", "small", "undef"
        * @param {boolean} onlyNormative Flag only normative chars are selected
        * @return {Promise} Array of all chars
        */
-      getFilteredChars(profileid, basechar, type, caseInsensitive = false, onlyNormative = true) {
+      getFilteredChars(profileid, basechar, type, cases = "undef", onlyNormative = true) {
         let self = this;
         
         return this._ensureData(() => {
@@ -154,14 +154,14 @@
           }
 
           if (basechar) {
-            if (caseInsensitive === true) {
-              expr.push("sl:basechar/@name-ci=" + self._getStringLiteralForXPath(basechar.toLowerCase()));
-            } else {
-              expr.push("sl:basechar/@name=" + self._getStringLiteralForXPath(basechar));
-            }
+            expr.push("sl:basechar/@name-ci=" + self._getStringLiteralForXPath(basechar.toLowerCase()));
             if ((type === "real") || (type === "pseudo")) {
               expr.push("sl:basechar/@type=\"" + type + "\"");
             }
+          }
+
+          if (cases) {
+            expr.push("sl:basechar/@case=" + self._getStringLiteralForXPath(cases));
           }
 
           let xpath = "";
