@@ -80,25 +80,20 @@
         display: flex;
       }
 
-      #filterpanel .filterelem#case {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #filterpanel .filterelem label {
-        font-size: 12px;
-        color: black;
-        display: block;
-      }
-
       #filterpanel paper-dropdown-menu {
         margin: auto;
         display: block;
-        width: 14em;
         --paper-input-container-label: {
           color: black; 
         };
+      }
+
+      #filterpanel #filterregion {
+        width: 14em;
+      }
+
+      #filterpanel #filtercases {
+        width: 7em;
       }
 
       #keyboardpanel {
@@ -196,14 +191,16 @@
           <h1 id="filterheading" class="heading"> [[ localize('heading_filter') ]] </h1>
         </iron-collapse>
         <div id="filter" class="container flex-horizontal">
-          <div class="filterelem" id="case">
-            <div id=checkboxcontainer>
-              <label class="label" for="filterCaseInsensitive"> [[ localize('case_sensitive_label') ]] </label>
-              <paper-checkbox slot="prefix" id="filterCaseInsensitive" checked="{{ storage.filterCaseInsensitive }}" on-change="_runSearch" noink=""
-                  title="[[ localize('case_sensitive_hint') ]]">
-                <span class="title"> [[ localize('case_sensitive') ]] </span>
-              </paper-checkbox>
-            </div>
+          <div class="filterelem" id="cases">
+            <paper-dropdown-menu class="filterelem" always-float-label="" no-animations="" noink=""
+                label="[[ localize('filter_cases') ]]" title="[[ localize('filter_cases_hint') ]]" id="filtercases">
+              <paper-listbox slot="dropdown-content" selected="1" on-selected-changed="_filterCasesChanged">
+                <paper-item>[[ localize('filter_cases_likesearch') ]]</paper-item>
+                <paper-item>[[ localize('filter_cases_captial') ]]</paper-item>
+                <paper-item>[[ localize('filter_cases_small') ]]</paper-item>
+                <paper-item>[[ localize('filter_cases_both') ]]</paper-item>
+              </paper-listbox>
+            </paper-dropdown-menu>
           </div>
           <div class="filterelem">
             <paper-dropdown-menu class="filterelem" always-float-label="" no-animations="" noink=""
