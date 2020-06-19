@@ -1868,7 +1868,7 @@
 
         <profile ref="id0" />
         <profile ref="id1" />
-        <basechar type="real" name="ª" name-ci="ª" />
+        <basechar type="real" name="!" name-ci="!" />
     </char>
 
     <char name="«" normative="true" case="undef">
