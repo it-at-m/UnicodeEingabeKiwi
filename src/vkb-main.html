@@ -450,6 +450,8 @@
             });
             self.set("_data.profiles", profiles);
 
+          }).then(() => {
+
             self._promptForNews();
 
             self._runSearch();
