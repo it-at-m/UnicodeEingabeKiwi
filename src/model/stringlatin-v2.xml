@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<stringlatin name="DIN 91379" dataversion="8 (Juni 2020)"
+<stringlatin name="DIN 91379" dataversion="8 (23.6.2020)"
     xmlns="http://muenchen.de/stringlatin/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://muenchen.de/stringlatin/ stringlatin-v2.xsd">
@@ -8,24 +8,28 @@
         <!-- cp 0009, CHARACTER TABULATION -->
 
         <profile ref="id0" />
+        <basechar type="real" name="!" name-ci="" />
     </char>
 
     <char name="&#xa;" normative="false" case="undef">
         <!-- cp 000A, LINE FEED (LF) -->
 
         <profile ref="id0" />
+        <basechar type="real" name="!" name-ci="" />
     </char>
 
     <char name="&#xd;" normative="false" case="undef">
         <!-- cp 000D, CARRIAGE RETURN (CR) -->
 
         <profile ref="id0" />
+        <basechar type="real" name="!" name-ci="" />
     </char>
 
     <char name=" " normative="false" case="undef">
         <!-- cp 0020, SPACE -->
 
         <profile ref="id0" />
+        <basechar type="real" name="!" name-ci="!" />
     </char>
 
     <char name="!" normative="true" case="undef">
@@ -593,7 +597,7 @@
         <basechar type="pseudo" name="H" name-ci="h" />
     </char>
 
-    <char name="K͟h" normative="true" case="undef">
+    <char name="K͟h" normative="true" case="capital">
         <!-- cp 004B 035F 0068, LATIN CAPITAL LETTER K WITH COMBINING DOUBLE MACRON BELOW AND LATIN SMALL LETTER H -->
 
         <profile ref="id2" />
@@ -1869,6 +1873,7 @@
         <profile ref="id0" />
         <profile ref="id1" />
         <basechar type="real" name="!" name-ci="!" />
+        <basechar type="pseudo" name="a" name-ci="a" />
     </char>
 
     <char name="«" normative="true" case="undef">
@@ -4723,6 +4728,7 @@
         <profile ref="id3" />
         <basechar type="real" name="I" name-ci="i" />
         <basechar type="pseudo" name="H" name-ci="h" />
+        <basechar type="pseudo" name="E" name-ci="e" />
         <info lang="de">GREEK CAPITAL LETTER ETA</info>
     </char>
 
@@ -4983,6 +4989,7 @@
         <profile ref="id3" />
         <basechar type="real" name="i" name-ci="i" />
         <basechar type="pseudo" name="n" name-ci="n" />
+        <basechar type="pseudo" name="e" name-ci="e" />
         <info lang="de">GREEK SMALL LETTER ETA</info>
     </char>
 
