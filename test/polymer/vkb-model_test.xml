@@ -4,329 +4,366 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://muenchen.de/stringlatin/ stringlatin-v2.xsd">
 
-	<char name="a" normative="true">
+	<char name="a" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="á" normative="true">
+	<char name="á" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="à" normative="true">
+	<char name="à" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ă" normative="true">
+	<char name="ă" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
 
-	<char name="ắ" normative="true">
+	<char name="ắ" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ằ" normative="true">
+	<char name="ằ" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ẵ" normative="true">
+	<char name="ẵ" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ẳ" normative="true">
+	<char name="ẳ" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="â" normative="true">
+	<char name="â" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ấ" normative="true">
+	<char name="ấ" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ầ" normative="true">
+	<char name="ầ" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ẫ" normative="true">
+	<char name="ẫ" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ǎ" normative="true">
+	<char name="ǎ" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="å" normative="true">
+	<char name="å" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ǻ" normative="true">
+	<char name="ǻ" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ä" normative="true">
+	<char name="ä" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ǟ" normative="true">
-		<profile ref="europe" />
-		<basechar type="real" name="a" name-ci="a" />
-	</char>
-	<char name="ã" normative="true">
-		<profile ref="asia" />
-		<basechar type="real" name="a" name-ci="a" />
-	</char>
-	<char name="ā" normative="true">
-		<basechar type="real" name="a" name-ci="a" />
-	</char>
-	<char name="ą" normative="true">
+	<char name="ǟ" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ạ" normative="true">
+	<char name="ã" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ặ" normative="true">
+	<char name="ā" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ả" normative="true">
+	<char name="ą" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="æ" normative="true">
+	<char name="ạ" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="ǽ" normative="true">
+	<char name="ặ" normative="true" case="small">
 		<basechar type="real" name="a" name-ci="a" />
 	</char>
-	<char name="A" normative="true">
+	<char name="ả" normative="true" case="small">
+		<profile ref="europe" />
+		<basechar type="real" name="a" name-ci="a" />
+	</char>
+	<char name="æ" normative="true" case="small">
+		<profile ref="asia" />
+		<basechar type="real" name="a" name-ci="a" />
+	</char>
+	<char name="ǽ" normative="true" case="small">
+		<basechar type="real" name="a" name-ci="a" />
+	</char>
+	<char name="A" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Á" normative="true">
+	<char name="Á" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="À" normative="true">
+	<char name="À" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ă" normative="true">
+	<char name="Ă" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ắ" normative="true">
+	<char name="Ắ" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ằ" normative="true">
+	<char name="Ằ" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ẵ" normative="true">
+	<char name="Ẵ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ẳ" normative="true">
+	<char name="Ẳ" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Â" normative="true">
+	<char name="Â" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ấ" normative="true">
+	<char name="Ấ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ầ" normative="true">
+	<char name="Ầ" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ẫ" normative="true">
+	<char name="Ẫ" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ǎ" normative="true">
+	<char name="Ǎ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Å" normative="true">
+	<char name="Å" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ǻ" normative="true">
+	<char name="Ǻ" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ä" normative="true">
+	<char name="Ä" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ǟ" normative="true">
+	<char name="Ǟ" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ã" normative="true">
+	<char name="Ã" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ā" normative="true">
+	<char name="Ā" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ą" normative="true">
+	<char name="Ą" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ạ" normative="true">
+	<char name="Ạ" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ặ" normative="true">
+	<char name="Ặ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ậ" normative="true">
+	<char name="Ậ" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ả" normative="true">
+	<char name="Ả" normative="true" case="capital">
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Æ" normative="true">
+	<char name="Æ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="Ǽ" normative="true">
+	<char name="Ǽ" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="A" name-ci="a" />
 	</char>
-	<char name="m" normative="true">
+    <char name="B" normative="true" case="capital">
+        <profile ref="asia" />
+        <basechar type="real" name="B" name-ci="b" />
+    </char>
+    <char name="b" normative="true" case="small">
+        <profile ref="asia" />
+        <basechar type="real" name="b" name-ci="b" />
+    </char>
+    <char name="C" normative="true" case="capital">
+        <profile ref="asia" />
+        <basechar type="real" name="C" name-ci="c" />
+    </char>
+    <char name="c" normative="true" case="small">
+        <profile ref="asia" />
+        <basechar type="real" name="c" name-ci="c" />
+    </char>
+    <char name="K" normative="true" case="capital">
+        <profile ref="asia" />
+        <basechar type="real" name="K" name-ci="k" />
+    </char>
+    <char name="k" normative="true" case="small">
+        <profile ref="asia" />
+        <basechar type="real" name="k" name-ci="k" />
+    </char>
+    <char name="L" normative="true" case="capital">
+        <profile ref="asia" />
+        <basechar type="real" name="L" name-ci="l" />
+    </char>
+    <char name="l" normative="true" case="small">
+        <profile ref="asia" />
+        <basechar type="real" name="l" name-ci="l" />
+    </char>
+    <char name="m" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="m" name-ci="m" />
 	</char>
-	<char name="m̂" normative="true">
+	<char name="m̂" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="m" name-ci="m" />
 	</char>
-	<char name="ṁ" normative="true">
+	<char name="ṁ" normative="true" case="small">
 		<basechar type="real" name="m" name-ci="m" />
 	</char>
-	<char name="M" normative="true">
+	<char name="M" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="M" name-ci="m" />
 	</char>
-	<char name="M̂" normative="true">
+	<char name="M̂" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="M" name-ci="m" />
 	</char>
-	<char name="Ṁ" normative="true">
+	<char name="Ṁ" normative="true" case="capital">
 		<basechar type="real" name="M" name-ci="m" />
 	</char>
-	<char name="p" normative="true">
+	<char name="p" normative="true" case="small">
 		<basechar type="real" name="p" name-ci="p" />
 	</char>
-	<char name="ṗ" normative="true">
+	<char name="ṗ" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="p" name-ci="p" />
 	</char>
-	<char name="P" normative="true">
+	<char name="P" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="P" name-ci="p" />
 	</char>
-	<char name="Ṗ" normative="true">
+	<char name="Ṗ" normative="true" case="capital">
 		<basechar type="real" name="P" name-ci="p" />
 	</char>
-	<char name="t" normative="true">
+	<char name="t" normative="true" case="small">
 		<basechar type="real" name="t" name-ci="t" />
 	</char>
-	<char name="ť" normative="true">
+	<char name="ť" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="t" name-ci="t" />
 	</char>
-	<char name="ṫ" normative="true">
+	<char name="ṫ" normative="true" case="small">
 		<profile ref="asia" />
 		<basechar type="real" name="t" name-ci="t" />
 	</char>
-	<char name="ţ" normative="true">
+	<char name="ţ" normative="true" case="small">
 		<basechar type="real" name="t" name-ci="t" />
 	</char>
-	<char name="ț" normative="true">
+	<char name="ț" normative="true" case="small">
 		<profile ref="europe" />
 		<basechar type="real" name="t" name-ci="t" />
 	</char>
-	<char name="þ" normative="true">
+	<char name="þ" normative="true" case="small">
 		<basechar type="real" name="t" name-ci="t" />
 		<basechar type="pseudo" name="p" name-ci="p" />
 		<basechar type="pseudo" name="b" name-ci="b" />
 	</char>
-	<char name="ŧ" normative="true">
+	<char name="ŧ" normative="true" case="small">
 		<basechar type="real" name="t" name-ci="t" />
 	</char>
-	<char name="T" normative="true">
+	<char name="T" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="T" name-ci="t" />
 	</char>
-	<char name="Ť" normative="true">
+	<char name="Ť" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="T" name-ci="t" />
 	</char>
-	<char name="Ṫ" normative="true">
+	<char name="Ṫ" normative="true" case="capital">
 		<basechar type="real" name="T" name-ci="t" />
 	</char>
-	<char name="Ţ" normative="true">
+	<char name="Ţ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="T" name-ci="t" />
 	</char>
-	<char name="Ț" normative="true">
+	<char name="Ț" normative="true" case="capital">
 		<profile ref="asia" />
 		<basechar type="real" name="T" name-ci="t" />
 	</char>
-	<char name="Þ" normative="true">
+	<char name="Þ" normative="true" case="capital">
 		<basechar type="real" name="T" name-ci="t" />
 		<basechar type="pseudo" name="P" name-ci="p" />
 		<basechar type="pseudo" name="B" name-ci="b" />
 	</char>
-	<char name="Ŧ" normative="true">
+	<char name="Ŧ" normative="true" case="capital">
 		<profile ref="europe" />
 		<basechar type="real" name="T" name-ci="t" />
 	</char>
 
 	<!-- DIN -->
-	<char name="C&#x0328;&#x0306;" normative="true">
+	<char name="C&#x0328;&#x0306;" normative="true" case="capital">
 		<profile ref="din" />
 		<basechar type="real" name="C" name-ci="c" />
 	</char>
 
-	<char name="c&#x0328;&#x0306;" normative="true">
+	<char name="c&#x0328;&#x0306;" normative="true" case="small">
 		<profile ref="din" />
 		<basechar type="real" name="c" name-ci="c" />
 	</char>
 
 	<!-- TODO: Sind Zeichen mit zwei Graphemen überhaupt in UC Zeichen oder nicht eher Strings? -->
-	<!-- char name="K&#x0035F;H" normative="true">
+	<!-- char name="K&#x0035F;H" normative="true" case="capital">
 		<profile ref="din" />
 		<basechar type="real" name="K" name-ci="k" />
 	</char>
-	<char name="K&#x0035F;h" normative="true">
+	<char name="K&#x0035F;h" normative="true" case="capital">
 		<profile ref="din" />
 		<basechar type="real" name="K" name-ci="k" />
 	</char>
-	<char name="k&#x0035F;h" normative="true">
+	<char name="k&#x0035F;h" normative="true"case="small">
 		<profile ref="din" />
 		<basechar type="real" name="k" name-ci="k" />
 	</char -->
-	<char name="K&#x0035F;" normative="true">
+	<char name="K&#x0035F;" normative="true" case="capital">
 		<profile ref="din" />
 		<basechar type="real" name="K" name-ci="k" />
 	</char>
-	<char name="k&#x0035F;" normative="true">
+	<char name="k&#x0035F;" normative="true" case="small">
 		<profile ref="din" />
 		<basechar type="real" name="k" name-ci="k" />
 	</char>
 
-	<char name="L&#x0325;&#x0304;" normative="false">
+	<char name="L&#x0325;&#x0304;" normative="false" case="capital">
 		<profile ref="din" />
 		<basechar type="real" name="L" name-ci="l" />
 	</char>
 
-	<char name="&#x20ac;" normative="false">
+	<char name="&#x20ac;" normative="false" case="undef">
 		<!-- Euro-Zeichen -->
 		<profile ref="din" />
 		<basechar type="real" name="$" name-ci="$" />
 	</char>
 
+    <char name="$" normative="false" case="undef">
+        <profile ref="din" />
+        <basechar type="real" name="$" name-ci="$" />
+    </char>
+    
 	<!--
 	  Profiles
 	  -->

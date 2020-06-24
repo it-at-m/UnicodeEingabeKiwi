@@ -106,19 +106,19 @@
         //
         test("Get all normative chars", () => {
           return model.getFilteredChars("", "", "", true, true).then((cs) => {
-            expect(cs.length).to.be.equal(79);
+            expect(cs.length).to.be.equal(87);
           });
         });
 
         test("Get all (normative and non-normative) chars", () => {
           return model.getFilteredChars("", "", "", true, false).then((cs) => {
-            expect(cs.length).to.be.equal(81);
+            expect(cs.length).to.be.equal(90);
           });
         });
 
         test("Filter normative chars by real and pseudo basechar case-sensitive", () => {
           return model.getFilteredChars("", "a", "", false, true).then((cs) => {
-            expect(cs.length).to.be.equal(25);
+            expect(cs.length).to.be.equal(51);
           });
         });
 
@@ -130,7 +130,7 @@
 
         test("Filter normative chars by real and pseudo basechar case-sensitive plus profile", () => {
           return model.getFilteredChars("europe", "a", "", false, true).then((cs) => {
-            expect(cs.length).to.be.equal(8);
+            expect(cs.length).to.be.equal(17);
           });
         });
 
