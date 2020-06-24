@@ -50,7 +50,8 @@
         "notavailable_start": "Back zu start",
         "history_heading": "History",
         "reset_notifications": "Reset notifications",
-        "serif_style": "Serif chars"
+        "serif_style": "Serif chars",
+        "basechar": "Basechar"
     },
     "de": {
         "appname": "Kiwi",
@@ -103,6 +104,7 @@
         "notavailable_start": "Zurück zum Start",
         "history_heading": "Chromik",
         "reset_notifications": "Benachrichtigungen rücksetzen",
-        "serif_style": "Serifenschrift"
+        "serif_style": "Serifenschrift",
+        "basechar": "Basiszeichen"
     }
 }

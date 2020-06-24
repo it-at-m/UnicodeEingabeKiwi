@@ -96,6 +96,22 @@
         width: 7em;
       }
 
+
+      #filterpanel #filterbasechar {
+        margin: auto;
+        display: block;
+        width: 5em;
+        --paper-input-container-label: {
+          color: black; 
+        };
+      }
+
+      #filterpanel #filterbasechar.serif {
+        --paper-input-container-input: {
+          font-family: serif !important;
+        };
+      }
+
       #keyboardpanel {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
@@ -170,7 +186,7 @@
             </paper-input>
       
             <div class="bufferbutton">
-              <paper-icon-button slot="suffix" icon="clear" on-tap="_clearBuffer" id="clearbufferbutton"
+              <paper-icon-button icon="clear" on-tap="_clearBuffer" id="clearbufferbutton"
                 alt="[[ localize('clear_buffer') ]]" title="[[ localize('clear_buffer') ]]">
               </paper-icon-button>
 
@@ -214,6 +230,17 @@
               </paper-listbox>
             </paper-dropdown-menu>
           </div>
+          <iron-collapse id="collapsebasechar" opened="{{ storage.feature.basechar }}">
+            <div class="filterelem">
+              <paper-input id="filterbasechar" class$="[[ font ]]" type="text" name="basechar"
+                always-float-label="" label="[[ localize('basechar') ]]"
+                value="{{ _data.searchChar }}"
+                minlength="1" maxlength="3"
+                autocomplete="off" 
+                readonly="true" />
+              </paper-input>
+            </div>
+          </iron-collapse>
           <div class="filterelem">
             <paper-button id="resetAllFilters" class="hyphen" on-tap="_resetAllFilters" noink="" raised=""
                 alt="[[ localize('reset_all_filters') ]]" title="[[ localize('reset_all_filters') ]]">
