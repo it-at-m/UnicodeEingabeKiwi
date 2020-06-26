@@ -237,7 +237,8 @@
                 value="{{ _data.searchChar }}"
                 minlength="1" maxlength="3"
                 autocomplete="off" 
-                readonly="true" />
+                readonly="true" tabindex="-1" />
+                <paper-icon-button slot="suffix" icon="clear" on-tap="_filterBasecharChanged" />
               </paper-input>
             </div>
           </iron-collapse>
@@ -579,6 +580,13 @@
         let seq = event.detail.value;
         this.log().debug("_filterCasesChanged(): selected=" + seq);
         this.set("storage.filterCases", seq);
+        this._runSearch();
+      }
+
+      _filterBasecharChanged(event) {
+        this.log().debug("_filterBasecharChanged()");
+        this.set("_data.filterBasechar", "");
+        this.set("_data.searchChar","");
         this._runSearch();
       }
 
