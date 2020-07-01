@@ -355,7 +355,7 @@
         //
         let existingStorageModelVersion = this.storage.storageModelVersion;
         this.log().debug("_updateOrInitModel(): currentStorageModelVersion=" + currentStorageModelVersion + "; existingStorageModelVersion=" + existingStorageModelVersion + ".");
-        if (existingStorageModelVersion === currentStorageModelVersion) {
+        if ((existingStorageModelVersion) && (existingStorageModelVersion === currentStorageModelVersion)) {
           this.log().debug("_updateOrInitModel(): detected from local storage, that browser has been here before and model version matches -- nothing to do.");
         } else {
           this.log().debug("_updateOrInitModel(): detected from local storage, that browsers hasn't been here befor or containts an older model version -- reseting it.");

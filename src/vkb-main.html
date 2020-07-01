@@ -55,8 +55,11 @@
         };
       }
 
-      #bufferpanel .bufferbutton {
+      #bufferpanel #clearbufferbutton {
         margin-left: 1em;
+      }
+
+      #bufferpanel #copytobutton {
         margin-right: 1em;
       }
 
@@ -89,16 +92,16 @@
       }
 
       #filterpanel #filterregion {
-        width: 14em;
+        width: 12em;
       }
 
       #filterpanel #filtercases {
         width: 7em;
       }
 
-
       #filterpanel #filterbasechar {
-        margin: auto;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
         display: block;
         width: 5em;
         --paper-input-container-label: {
@@ -185,19 +188,17 @@
               </iron-a11y-keys>
             </paper-input>
       
-            <div class="bufferbutton">
-              <paper-icon-button icon="clear" on-tap="_clearBuffer" id="clearbufferbutton"
-                alt="[[ localize('clear_buffer') ]]" title="[[ localize('clear_buffer') ]]">
-              </paper-icon-button>
+            <paper-icon-button icon="clear" on-tap="_clearBuffer" id="clearbufferbutton"
+              alt="[[ localize('clear_buffer') ]]" title="[[ localize('clear_buffer') ]]">
+            </paper-icon-button>
 
-              <paper-icon-button icon="search" on-tap="_searchChar" id=searchcharbutton"
-                alt="[[ localize('search_char') ]]" title="[[ localize('search_char') ]]">
-              </paper-icon-button>
-              <paper-icon-button id="copytobutton"
-                icon="content-copy" on-tap="_copyToDestination"
-                alt="" title="">
-              </paper-icon-button>
-            </div>
+            <paper-icon-button icon="search" on-tap="_searchChar" id=searchcharbutton"
+              alt="[[ localize('search_char') ]]" title="[[ localize('search_char') ]]">
+            </paper-icon-button>
+
+            <paper-icon-button id="copytobutton" icon="content-copy" on-tap="_copyToDestination"
+              alt="[[ localize('clipboard_copy') ]]" title="[[ localize('clipboard_copy') ]]">
+            </paper-icon-button>
           </div>
         </div>
       </div>
@@ -583,7 +584,7 @@
         this._runSearch();
       }
 
-      _filterBasecharChanged(event) {
+      _filterBasecharChanged(event) { // eslint-disable-line no-unused-vars
         this.log().debug("_filterBasecharChanged()");
         this.set("_data.filterBasechar", "");
         this.set("_data.searchChar","");
