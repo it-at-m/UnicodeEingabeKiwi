@@ -67,6 +67,12 @@
                     <xs:documentation>Bezeichnung des Profils</xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element name="description" type="labelType" minOccurs="1"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Beschreibung des Profils</xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" use="required">
             <xs:annotation>

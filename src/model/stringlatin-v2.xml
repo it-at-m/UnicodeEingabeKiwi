@@ -7668,22 +7668,27 @@
 
     <profile id="id0">
         <name lang="de">String.Latin 1.1</name>
+        <description lang="de">Lateinische Zeichen in Unicode 1.1</description>
     </profile>
 
     <profile id="id1">
         <name lang="de">Zeichen + Buchstaben</name>
+        <description lang="de">Zeichen + Buchstaben</description>
     </profile>
 
     <profile id="id2">
         <name lang="de">Buchstaben</name>
+        <description lang="de">Buchstaben</description>
     </profile>
 
     <profile id="id3">
         <name lang="de">griechische Buchstaben</name>
+        <description lang="de">Griechische Buchstaben</description>
     </profile>
 
     <profile id="id4">
         <name lang="de">kyrillische Buchstaben</name>
+        <description lang="de">Kyrillische Buchstaben</description>
     </profile>
 
 </stringlatin>

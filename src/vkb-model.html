@@ -118,13 +118,15 @@
         let profiles = [];
         let seq = 1; // 0 is reserved for "all"
         for (let i = 0; i < profileIds.length; i++) {
-          let xpath = "/sl:stringlatin/sl:profile[@id=" + this._getStringLiteralForXPath(profileIds[i]) + "]/sl:name[@lang=\"" + this.lang + "\"]/text()";
-          let profileName = this._getStringByXPath(xpath, this._data.xmlDom);
+          let xpathName = "/sl:stringlatin/sl:profile[@id=" + this._getStringLiteralForXPath(profileIds[i]) + "]/sl:name[@lang=\"" + this.lang + "\"]/text()";
+          let profileName = this._getStringByXPath(xpathName, this._data.xmlDom);
+          let xpathDescr = "/sl:stringlatin/sl:profile[@id=" + this._getStringLiteralForXPath(profileIds[i]) + "]/sl:description[@lang=\"" + this.lang + "\"]/text()";
+          let profileDescr = this._getStringByXPath(xpathDescr, this._data.xmlDom);
           profiles.push({
             "seq": seq,
             "id": profileIds[i],
             "name": profileName,
-            "descr": profileName,
+            "descr": profileDescr,
           });
           seq++;
         }
