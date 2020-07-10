@@ -213,20 +213,20 @@
                 label="[[ localize('filter_cases') ]]" title="[[ localize('filter_cases_hint') ]]" id="filtercases">
               <paper-listbox id="filtercases_listbox" slot="dropdown-content" selected="{{ storage.filterCases }}" 
                   on-selected-changed="_filterCasesChanged">
-                <paper-item title="[[ localize('filter_cases_likesearch') ]]">[[ localize('filter_cases_likesearch') ]]</paper-item>
-                <paper-item title="[[ localize('filter_cases_captial') ]]">[[ localize('filter_cases_captial') ]]</paper-item>
-                <paper-item title="[[ localize('filter_cases_small') ]]">[[ localize('filter_cases_small') ]]</paper-item>
-                <paper-item title="[[ localize('filter_cases_both') ]]">[[ localize('filter_cases_both') ]]</paper-item>
+                <paper-item title="[[ localize('filter_cases_likesearch_hint') ]]">[[ localize('filter_cases_likesearch') ]]</paper-item>
+                <paper-item title="[[ localize('filter_cases_captial_hint') ]]">[[ localize('filter_cases_captial') ]]</paper-item>
+                <paper-item title="[[ localize('filter_cases_small_hint') ]]">[[ localize('filter_cases_small') ]]</paper-item>
+                <paper-item title="[[ localize('filter_cases_both_hint') ]]">[[ localize('filter_cases_both') ]]</paper-item>
               </paper-listbox>
             </paper-dropdown-menu>
           </div>
           <div class="filterelem">
             <paper-dropdown-menu class="filterelem" always-float-label="" no-animations="" noink=""
-                label="[[ localize('filter_regions') ]]" title="[[ localize('filter_regions') ]]" id="filterregion">
+                label="[[ localize('filter_regions') ]]" title="[[ localize('filter_regions_hint') ]]" id="filterregion">
               <paper-listbox id="filterregion_listbox" slot="dropdown-content" selected="{{ storage.filterRegion }}"
                   on-selected-changed="_filterRegionChanged">
                 <template is="dom-repeat" items="[[ _data.profiles ]]" as="region">
-                  <paper-item title="[[ region.name ]]">[[ region.name ]]</paper-item>
+                  <paper-item title="[[ region.descr ]]">[[ region.name ]]</paper-item>
                 </template>
               </paper-listbox>
             </paper-dropdown-menu>
@@ -476,6 +476,7 @@
               "seq": 0,
               "id": "",
               "name": self.localize("filter_region_all"),
+              "descr": self.localize("filter_region_all_hint")
             });
             self.set("_data.profiles", profiles);
 
