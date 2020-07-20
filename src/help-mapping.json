@@ -20,7 +20,7 @@
 //    "mainview/copytobutton": "#mainview",
 //    "mainview/keyboard": "#mainview",
 
-//    "mainview/filterCaseInsensitive": "#mainview",
+//    "mainview/filtercases": "#mainview",
 //    "mainview/filterregion": "#mainview",
 //    "mainview/resetAllFilters": "#mainview",
 
