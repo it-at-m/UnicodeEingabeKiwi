@@ -17,7 +17,6 @@
     "manifest.json",
     "bower_components/webcomponentsjs/*",
     "node_modules/**/*",
-    "sw-precache-config.js",
     "index.css"
   ],
   "lint": {
@@ -32,7 +31,6 @@
       "html": { "minify": false },
       "bundle": false,
       "addServiceWorker": false,
-      "swPrecacheConfig": "sw-precache-config.js",
       "addPushManifest": false,
       "insertPrefetchLinks": false,
       "basePath": "/",
@@ -41,7 +39,6 @@
     {
       "name": "es6-root-optimized",
       "preset": "es6-bundled",
-      "swPrecacheConfig": "sw-precache-config.js",
       "addPushManifest": false,
       "basePath": "/",
       "stripComments": "true",

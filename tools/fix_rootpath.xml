@@ -14,11 +14,6 @@
                     <replacefilter token='"start_url": "/' value='"start_url": "@{finalpath}' />
                 </replace>
 
-                <replaceregexp file="@{path}/sw-precache-config.js" flags="mg">
-                    <regexp pattern='(["&apos;])/' />
-                    <substitution expression='\1@{finalpath}' />
-                </replaceregexp>
-
                 <replaceregexp file="@{path}/src/notfound.html" flags="m">
                     <regexp pattern='"0;\s+URL=/"'/>
                     <substitution expression='"0; URL=@{finalpath}"' />
