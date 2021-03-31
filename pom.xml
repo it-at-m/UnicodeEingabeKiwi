@@ -16,7 +16,7 @@
            Version and build timestamp due to inability to pin bower dependencies 
           -->
         <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
-        <appversion>1.1.1</appversion>
+        <appversion>1.1.2</appversion>
         <buildno>${maven.build.timestamp}</buildno>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
