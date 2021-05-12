@@ -539,9 +539,8 @@
           return JSON.parse(stripped);
         }).then((json) => {
           self.set("_data.helpMapping", json);
-        }).catch((err) => {
-          // Communication or parse errors
-          self._error(err);
+        }).catch((err) => { // eslint-disable-line no-unused-vars
+          // Ignore errors 
         });
       }
 
