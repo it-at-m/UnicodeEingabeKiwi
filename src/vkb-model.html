@@ -116,19 +116,17 @@
 
         let profileIds = this._getStringsByXPath("/sl:stringlatin/sl:profile/@id", this._data.xmlDom);
         let profiles = [];
-        let seq = 1; // 0 is reserved for "all"
         for (let i = 0; i < profileIds.length; i++) {
           let xpathName = "/sl:stringlatin/sl:profile[@id=" + this._getStringLiteralForXPath(profileIds[i]) + "]/sl:name[@lang=\"" + this.lang + "\"]/text()";
           let profileName = this._getStringByXPath(xpathName, this._data.xmlDom);
           let xpathDescr = "/sl:stringlatin/sl:profile[@id=" + this._getStringLiteralForXPath(profileIds[i]) + "]/sl:description[@lang=\"" + this.lang + "\"]/text()";
           let profileDescr = this._getStringByXPath(xpathDescr, this._data.xmlDom);
           profiles.push({
-            "seq": seq,
+            "seq": i,
             "id": profileIds[i],
             "name": profileName,
             "descr": profileDescr,
           });
-          seq++;
         }
         return profiles;
       }
@@ -148,7 +146,7 @@
         await this._ensureData("getFilteredChars()");
 
         let expr = [];
-        if (profileid) {
+        if (profileid !== "__all") {
           expr.push("sl:profile/@ref=" + this._getStringLiteralForXPath(profileid));
         }
 

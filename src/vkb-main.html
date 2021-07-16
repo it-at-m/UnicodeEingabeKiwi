@@ -471,13 +471,6 @@
             let previous = self.storage.filterCases;
             self.set("storage.filterCases",(previous + 1) % 4);
             self.set("storage.filterCases",previous);
-
-            profiles.unshift({
-              "seq": 0,
-              "id": "",
-              "name": self.localize("filter_region_all"),
-              "descr": self.localize("filter_region_all_hint")
-            });
             self.set("_data.profiles", profiles);
 
           }).then(() => {

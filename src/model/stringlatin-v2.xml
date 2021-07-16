@@ -3382,6 +3382,11 @@
         <basechar type="pseudo" name="E" name-ci="e" />
     </char>
 
+    <profile id="__all">
+        <name lang="de">alle</name>
+        <description lang="de">Alle Zeichen inkl. Buchstaben, Ziffern</description>
+    </profile>
+
     <profile id="id0">
         <name lang="de">Buchstaben</name>
         <description lang="de">Nur Buchstaben</description>
