@@ -9,9 +9,11 @@
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
+    "bower-license": "^0.4.4",
     "chai": "^4.2.0",
     "eslint": "^7.9.0",
     "eslint-plugin-html": "^6.1.0",
+    "license-checker": "^25.0.1",
     "lighthouse": "^6.3.0",
     "mocha": "^8.1.3"
   }
