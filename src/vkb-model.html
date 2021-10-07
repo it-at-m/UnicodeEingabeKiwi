@@ -80,7 +80,7 @@
         //
         // Support Unicode-aware sorting
         //
-        this.set("_data.collator", new Intl.Collator(this.lang, {sensitivty: "letiant"}));
+        this.set("_data.collator", new Intl.Collator(this.lang, {sensitivty: "variant"}));
         this.set("_data.strComparator", (a, b) => this._data.collator.compare(a, b));
 
         this.log().debug("connectedCallback(): ctor completed");
