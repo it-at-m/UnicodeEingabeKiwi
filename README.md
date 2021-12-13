@@ -1,5 +1,8 @@
 # Virtuelles Keyboard (KIWI) #
 
+## **Achtung** ##
+Diese Version von KIWI wird **NICHT** mehr weiterentwickelt, aber für Andere trotzdem stehengelassen. Bitte verwenden Sie stattgessen die neue KIWI-Version: [https://github.com/it-at-m/UnicodeEingabeKiwi2](https://github.com/it-at-m/UnicodeEingabeKiwi2)!
+
 ## Hintergrund ##
 *KIWI* (**Ki**nderleicht **W**ortbestandteile **i**ntegrieren) ist eine Eingabehilfe, welche der komfortablen und effizienten Eingabe von Zeichen aus dem Zeichenvorrat *Lateinische Zeichen in Unicode* dient. Zeichen mit Diakritika (z.B. Ẫ, D̂, Ģ, und M̂) oder nicht deutschen Ursprungs (z.B. ð, ø oder þ) findet man auf herkömmlichen deutschen Tastaturen in der Regel nicht. KIWI macht alle Zeichen aus dem Zeichensatz *Lateinische Zeichen in UNICODE* leicht auffindbar und eingebbar. In KIWI können mittels herkömmlicher Tastatur z.B. Namen mit diakritischen Zeichen einfach eingegeben und dann mittels Copy & Paste in beliebige (Fach-)Anwendungen übernommen werden. Der Zeichensatz *Lateinische Zeichen in UNICODE* ist insbesondere für Namen natürlicher und juristischer Personen sowie bei Adressen relevant. 
 
